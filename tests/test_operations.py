@@ -1,3 +1,7 @@
+########################
+# Operation Tests - Complete Coverage Including New Operations
+########################
+
 import pytest
 from decimal import Decimal
 from typing import Any, Dict, Type
@@ -11,6 +15,10 @@ from app.operations import (
     Division,
     Power,
     Root,
+    Modulus,
+    IntegerDivision,
+    Percentage,
+    AbsoluteDifference,
     OperationFactory,
 )
 
@@ -56,6 +64,10 @@ class BaseOperationTest:
             with pytest.raises(error, match=error_message):
                 operation.execute(a, b)
 
+
+# ========================
+# ORIGINAL OPERATION TESTS
+# ========================
 
 class TestAddition(BaseOperationTest):
     """Test Addition operation."""
@@ -182,11 +194,101 @@ class TestRoot(BaseOperationTest):
     }
 
 
-class TestOperationFactory:
-    """Test OperationFactory functionality."""
+# ========================
+# NEW OPERATION TESTS FOR MIDTERM
+# ========================
 
-    def test_create_valid_operations(self):
-        """Test creation of all valid operations."""
+class TestModulus(BaseOperationTest):
+    """Test Modulus operation - NEW FOR MIDTERM."""
+
+    operation_class = Modulus
+    valid_test_cases = {
+        "positive_numbers": {"a": "10", "b": "3", "expected": "1"},
+        "negative_dividend": {"a": "-10", "b": "3", "expected": "2"},
+        "negative_divisor": {"a": "10", "b": "-3", "expected": "-2"},
+        "zero_dividend": {"a": "0", "b": "5", "expected": "0"},
+        "decimal_numbers": {"a": "10.5", "b": "3.2", "expected": "0.9"},
+        "exact_division": {"a": "15", "b": "5", "expected": "0"},
+    }
+    invalid_test_cases = {
+        "modulus_by_zero": {
+            "a": "10",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Modulus by zero is not allowed"
+        },
+    }
+
+
+class TestIntegerDivision(BaseOperationTest):
+    """Test Integer Division operation - NEW FOR MIDTERM."""
+
+    operation_class = IntegerDivision
+    valid_test_cases = {
+        "positive_numbers": {"a": "10", "b": "3", "expected": "3"},
+        "exact_division": {"a": "15", "b": "3", "expected": "5"},
+        "negative_dividend": {"a": "-10", "b": "3", "expected": "-4"},
+        "negative_divisor": {"a": "10", "b": "-3", "expected": "-4"},
+        "zero_dividend": {"a": "0", "b": "5", "expected": "0"},
+        "decimal_truncation": {"a": "22", "b": "7", "expected": "3"},
+    }
+    invalid_test_cases = {
+        "divide_by_zero": {
+            "a": "10",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Integer division by zero is not allowed"
+        },
+    }
+
+
+class TestPercentage(BaseOperationTest):
+    """Test Percentage operation - NEW FOR MIDTERM."""
+
+    operation_class = Percentage
+    valid_test_cases = {
+        "basic_percentage": {"a": "25", "b": "100", "expected": "25"},
+        "greater_than_base": {"a": "150", "b": "100", "expected": "150"},
+        "decimal_values": {"a": "12.5", "b": "50", "expected": "25"},
+        "zero_value": {"a": "0", "b": "100", "expected": "0"},
+        "negative_values": {"a": "-25", "b": "100", "expected": "-25"},
+        "fractional_result": {"a": "1", "b": "3", "expected": "33.33333333333333333333333333"},
+    }
+    invalid_test_cases = {
+        "zero_base": {
+            "a": "25",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Cannot calculate percentage with zero base value"
+        },
+    }
+
+
+class TestAbsoluteDifference(BaseOperationTest):
+    """Test Absolute Difference operation - NEW FOR MIDTERM."""
+
+    operation_class = AbsoluteDifference
+    valid_test_cases = {
+        "positive_difference": {"a": "10", "b": "3", "expected": "7"},
+        "negative_difference": {"a": "3", "b": "10", "expected": "7"},
+        "equal_numbers": {"a": "5", "b": "5", "expected": "0"},
+        "negative_numbers": {"a": "-5", "b": "-8", "expected": "3"},
+        "mixed_signs": {"a": "-5", "b": "3", "expected": "8"},
+        "decimal_numbers": {"a": "5.7", "b": "2.3", "expected": "3.4"},
+        "zero_operand": {"a": "0", "b": "5", "expected": "5"},
+    }
+    invalid_test_cases = {}  # Absolute difference has no invalid cases
+
+
+# ========================
+# OPERATION FACTORY TESTS - UPDATED FOR NEW OPERATIONS
+# ========================
+
+class TestOperationFactory:
+    """Test OperationFactory functionality with all operations."""
+
+    def test_create_all_operations(self):
+        """Test creation of all valid operations including new ones."""
         operation_map = {
             'add': Addition,
             'subtract': Subtraction,
@@ -194,6 +296,10 @@ class TestOperationFactory:
             'divide': Division,
             'power': Power,
             'root': Root,
+            'modulus': Modulus,
+            'int_divide': IntegerDivision,
+            'percent': Percentage,
+            'abs_diff': AbsoluteDifference,
         }
 
         for op_name, op_class in operation_map.items():
@@ -202,6 +308,19 @@ class TestOperationFactory:
             # Test case-insensitive
             operation = OperationFactory.create_operation(op_name.upper())
             assert isinstance(operation, op_class)
+
+    def test_get_available_operations_includes_new(self):
+        """Test that available operations includes all new operations."""
+        available = OperationFactory.get_available_operations()
+        
+        # Check that all operations are included
+        expected_operations = [
+            'add', 'subtract', 'multiply', 'divide', 'power', 'root',
+            'modulus', 'int_divide', 'percent', 'abs_diff'
+        ]
+        
+        for op in expected_operations:
+            assert op in available
 
     def test_create_invalid_operation(self):
         """Test creation of invalid operation raises error."""
@@ -225,3 +344,83 @@ class TestOperationFactory:
 
         with pytest.raises(TypeError, match="Operation class must inherit"):
             OperationFactory.register_operation("invalid", InvalidOperation)
+
+
+# ========================
+# INTEGRATION TESTS WITH CALCULATION MODEL
+# ========================
+
+class TestOperationIntegration:
+    """Integration tests for new operations with Calculation model."""
+
+    def test_modulus_with_calculation_model(self):
+        """Test modulus operation integrates with Calculation model."""
+        from app.calculation import Calculation
+        
+        calc = Calculation(
+            operation="Modulus",
+            operand1=Decimal("10"),
+            operand2=Decimal("3")
+        )
+        assert calc.result == Decimal("1")
+
+    def test_integer_division_with_calculation_model(self):
+        """Test integer division integrates with Calculation model."""
+        from app.calculation import Calculation
+        
+        calc = Calculation(
+            operation="IntegerDivision", 
+            operand1=Decimal("22"),
+            operand2=Decimal("7")
+        )
+        assert calc.result == Decimal("3")
+
+    def test_percentage_with_calculation_model(self):
+        """Test percentage integrates with Calculation model."""
+        from app.calculation import Calculation
+        
+        calc = Calculation(
+            operation="Percentage",
+            operand1=Decimal("25"),
+            operand2=Decimal("100")
+        )
+        assert calc.result == Decimal("25")
+
+    def test_absolute_difference_with_calculation_model(self):
+        """Test absolute difference integrates with Calculation model."""
+        from app.calculation import Calculation
+        
+        calc = Calculation(
+            operation="AbsoluteDifference",
+            operand1=Decimal("3"),
+            operand2=Decimal("10")
+        )
+        assert calc.result == Decimal("7")
+
+
+# ========================
+# STRING REPRESENTATION TESTS FOR NEW OPERATIONS
+# ========================
+
+class TestNewOperationStringRepresentation:
+    """Test string representations of new operations."""
+
+    def test_modulus_str(self):
+        """Test Modulus string representation."""
+        operation = Modulus()
+        assert str(operation) == "Modulus"
+
+    def test_integer_division_str(self):
+        """Test IntegerDivision string representation."""
+        operation = IntegerDivision()
+        assert str(operation) == "IntegerDivision"
+
+    def test_percentage_str(self):
+        """Test Percentage string representation."""
+        operation = Percentage()
+        assert str(operation) == "Percentage"
+
+    def test_absolute_difference_str(self):
+        """Test AbsoluteDifference string representation."""
+        operation = AbsoluteDifference()
+        assert str(operation) == "AbsoluteDifference"
