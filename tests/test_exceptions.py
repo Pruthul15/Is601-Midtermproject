@@ -1,3 +1,4 @@
+# tests/test_exceptions.py
 import pytest
 from app.exceptions import CalculatorError, ValidationError, OperationError, ConfigurationError
 

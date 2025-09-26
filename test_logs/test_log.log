@@ -3412,3 +3412,971 @@
 2025-09-26 14:21:50,858 - INFO - Added observer: AutoSaveObserver
 2025-09-26 14:21:50,859 - INFO - Set operation: Addition
 2025-09-26 14:21:50,923 - INFO - History auto-saved
+2025-09-26 14:32:06,662 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,662 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,664 - INFO - Loaded 1 calculations from history
+2025-09-26 14:32:06,673 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,678 - INFO - Loaded empty history file
+2025-09-26 14:32:06,678 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,678 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:06,678 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:06,681 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,684 - INFO - Loaded empty history file
+2025-09-26 14:32:06,684 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,684 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:06,684 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:06,689 - INFO - Empty history saved
+2025-09-26 14:32:06,694 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,697 - INFO - Loaded empty history file
+2025-09-26 14:32:06,697 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,697 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:06,697 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:06,697 - INFO - Set operation: Addition
+2025-09-26 14:32:06,697 - INFO - Calculation performed: Addition (2, 3) = 5
+2025-09-26 14:32:06,700 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv
+2025-09-26 14:32:06,717 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,718 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,730 - ERROR - Failed to load history: CSV read error
+2025-09-26 14:32:06,736 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,747 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,748 - INFO - Set operation: Addition
+2025-09-26 14:32:06,751 - ERROR - Failed to save history: CSV write error
+2025-09-26 14:32:06,768 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,769 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,769 - INFO - Set operation: Addition
+2025-09-26 14:32:06,777 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,780 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,780 - INFO - Set operation: Addition
+2025-09-26 14:32:06,788 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,788 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,789 - INFO - Set operation: Addition
+2025-09-26 14:32:06,789 - ERROR - Validation error: Invalid number
+2025-09-26 14:32:06,793 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,794 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,794 - INFO - Set operation: Addition
+2025-09-26 14:32:06,795 - ERROR - Operation failed: Unexpected error
+2025-09-26 14:32:06,806 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,806 - WARNING - Could not load existing history: Load failed
+2025-09-26 14:32:06,806 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,810 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,810 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,810 - INFO - Set operation: Addition
+2025-09-26 14:32:06,818 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,819 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,824 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,825 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,829 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,830 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,835 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,836 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,836 - INFO - Set operation: Addition
+2025-09-26 14:32:06,840 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,840 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,841 - INFO - Loaded empty history file
+2025-09-26 14:32:06,845 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,845 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,846 - INFO - No history file found - starting with empty history
+2025-09-26 14:32:06,849 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,850 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,855 - INFO - Empty history saved
+2025-09-26 14:32:06,859 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,860 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,860 - INFO - Added observer: Mock
+2025-09-26 14:32:06,860 - INFO - Set operation: Addition
+2025-09-26 14:32:06,865 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,866 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,871 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,875 - INFO - Loaded empty history file
+2025-09-26 14:32:06,875 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,906 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,914 - INFO - Loaded empty history file
+2025-09-26 14:32:06,915 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,915 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:06,915 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:06,925 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,934 - INFO - Loaded empty history file
+2025-09-26 14:32:06,934 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,935 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:06,935 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:06,948 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,956 - INFO - Loaded empty history file
+2025-09-26 14:32:06,956 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,956 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:06,956 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:06,963 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,967 - INFO - Loaded empty history file
+2025-09-26 14:32:06,968 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,968 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:06,968 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:06,973 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,978 - INFO - Loaded empty history file
+2025-09-26 14:32:06,979 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,980 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:06,980 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:06,984 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,987 - INFO - Loaded empty history file
+2025-09-26 14:32:06,987 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:06,987 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:06,987 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:06,993 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:06,999 - INFO - Loaded empty history file
+2025-09-26 14:32:06,999 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,000 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,000 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,004 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,007 - INFO - Loaded empty history file
+2025-09-26 14:32:07,007 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,007 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,007 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,012 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,017 - INFO - Loaded empty history file
+2025-09-26 14:32:07,017 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,018 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,018 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,022 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,025 - INFO - Loaded empty history file
+2025-09-26 14:32:07,025 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,025 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,025 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,033 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,036 - INFO - Loaded empty history file
+2025-09-26 14:32:07,036 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,036 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,036 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,040 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,042 - INFO - Loaded empty history file
+2025-09-26 14:32:07,043 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,043 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,043 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,049 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,051 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,051 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,051 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,055 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,055 - WARNING - Could not load existing history: Load failed
+2025-09-26 14:32:07,056 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,056 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,056 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,059 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,063 - INFO - Loaded empty history file
+2025-09-26 14:32:07,063 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,063 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,063 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,065 - INFO - Set operation: Addition
+2025-09-26 14:32:07,071 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,074 - INFO - Loaded empty history file
+2025-09-26 14:32:07,074 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,074 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,074 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,077 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,080 - INFO - Loaded empty history file
+2025-09-26 14:32:07,080 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,080 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,080 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,087 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,090 - INFO - Loaded empty history file
+2025-09-26 14:32:07,091 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,091 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,091 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,091 - INFO - Set operation: Addition
+2025-09-26 14:32:07,094 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,097 - INFO - Loaded empty history file
+2025-09-26 14:32:07,097 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,097 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,097 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,098 - INFO - Set operation: Addition
+2025-09-26 14:32:07,104 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,107 - INFO - Loaded empty history file
+2025-09-26 14:32:07,107 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,107 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,107 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,108 - INFO - Set operation: Addition
+2025-09-26 14:32:07,112 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,115 - INFO - Loaded empty history file
+2025-09-26 14:32:07,115 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,115 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,115 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,153 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,157 - INFO - Loaded empty history file
+2025-09-26 14:32:07,157 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,157 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,157 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,159 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,161 - INFO - Loaded empty history file
+2025-09-26 14:32:07,161 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,161 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,161 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,164 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,167 - INFO - Loaded empty history file
+2025-09-26 14:32:07,168 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,168 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,168 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,174 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,177 - INFO - Loaded empty history file
+2025-09-26 14:32:07,177 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,177 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,177 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,178 - INFO - Set operation: Addition
+2025-09-26 14:32:07,180 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,182 - INFO - Loaded empty history file
+2025-09-26 14:32:07,183 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,183 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,183 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,183 - INFO - Set operation: Subtraction
+2025-09-26 14:32:07,185 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,188 - INFO - Loaded empty history file
+2025-09-26 14:32:07,188 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,188 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,188 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,189 - INFO - Set operation: Multiplication
+2025-09-26 14:32:07,193 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,195 - INFO - Loaded empty history file
+2025-09-26 14:32:07,195 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,195 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,195 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,196 - INFO - Set operation: Division
+2025-09-26 14:32:07,197 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,200 - INFO - Loaded empty history file
+2025-09-26 14:32:07,200 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,200 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,200 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,200 - INFO - Set operation: Power
+2025-09-26 14:32:07,202 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,204 - INFO - Loaded empty history file
+2025-09-26 14:32:07,205 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,205 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,205 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,205 - INFO - Set operation: Root
+2025-09-26 14:32:07,210 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 14:32:07,213 - INFO - Loaded empty history file
+2025-09-26 14:32:07,213 - INFO - Calculator initialized with configuration
+2025-09-26 14:32:07,213 - INFO - Added observer: LoggingObserver
+2025-09-26 14:32:07,213 - INFO - Added observer: AutoSaveObserver
+2025-09-26 14:32:07,213 - INFO - Set operation: Addition
+2025-09-26 14:32:07,267 - INFO - History auto-saved
+2025-09-26 15:02:05,670 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,671 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,675 - INFO - Loaded 1 calculations from history
+2025-09-26 15:02:05,692 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,697 - INFO - Loaded empty history file
+2025-09-26 15:02:05,697 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,697 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:05,698 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:05,706 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,713 - INFO - Loaded empty history file
+2025-09-26 15:02:05,714 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,714 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:05,714 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:05,722 - INFO - Empty history saved
+2025-09-26 15:02:05,728 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,735 - INFO - Loaded empty history file
+2025-09-26 15:02:05,735 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,735 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:05,735 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:05,736 - INFO - Set operation: Addition
+2025-09-26 15:02:05,736 - INFO - Calculation performed: Addition (2, 3) = 5
+2025-09-26 15:02:05,742 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv
+2025-09-26 15:02:05,762 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,763 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,765 - ERROR - Failed to load history: CSV read error
+2025-09-26 15:02:05,773 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,775 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,775 - INFO - Set operation: Addition
+2025-09-26 15:02:05,779 - ERROR - Failed to save history: CSV write error
+2025-09-26 15:02:05,785 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,785 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,786 - INFO - Set operation: Addition
+2025-09-26 15:02:05,799 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,800 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,801 - INFO - Set operation: Addition
+2025-09-26 15:02:05,811 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,813 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,814 - INFO - Set operation: Addition
+2025-09-26 15:02:05,814 - ERROR - Validation error: Invalid number
+2025-09-26 15:02:05,821 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,822 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,822 - INFO - Set operation: Addition
+2025-09-26 15:02:05,824 - ERROR - Operation failed: Unexpected error
+2025-09-26 15:02:05,866 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,866 - WARNING - Could not load existing history: Load failed
+2025-09-26 15:02:05,867 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,883 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,884 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,884 - INFO - Set operation: Addition
+2025-09-26 15:02:05,907 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,910 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,917 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,918 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,935 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,936 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,943 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,944 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,945 - INFO - Set operation: Addition
+2025-09-26 15:02:05,960 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,961 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,962 - INFO - Loaded empty history file
+2025-09-26 15:02:05,969 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,974 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,975 - INFO - No history file found - starting with empty history
+2025-09-26 15:02:05,982 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:05,983 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:05,990 - INFO - Empty history saved
+2025-09-26 15:02:06,007 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,008 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,008 - INFO - Added observer: Mock
+2025-09-26 15:02:06,008 - INFO - Set operation: Addition
+2025-09-26 15:02:06,025 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,026 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,031 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,048 - INFO - Loaded empty history file
+2025-09-26 15:02:06,049 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,139 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,153 - INFO - Loaded empty history file
+2025-09-26 15:02:06,153 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,153 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,153 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,169 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,176 - INFO - Loaded empty history file
+2025-09-26 15:02:06,177 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,177 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,177 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,190 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,197 - INFO - Loaded empty history file
+2025-09-26 15:02:06,197 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,197 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,197 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,212 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,220 - INFO - Loaded empty history file
+2025-09-26 15:02:06,220 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,220 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,221 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,238 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,249 - INFO - Loaded empty history file
+2025-09-26 15:02:06,250 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,250 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,250 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,268 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,276 - INFO - Loaded empty history file
+2025-09-26 15:02:06,276 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,276 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,277 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,290 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,297 - INFO - Loaded empty history file
+2025-09-26 15:02:06,297 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,297 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,297 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,309 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,317 - INFO - Loaded empty history file
+2025-09-26 15:02:06,318 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,318 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,318 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,330 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,338 - INFO - Loaded empty history file
+2025-09-26 15:02:06,338 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,338 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,338 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,355 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,365 - INFO - Loaded empty history file
+2025-09-26 15:02:06,366 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,366 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,366 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,378 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,389 - INFO - Loaded empty history file
+2025-09-26 15:02:06,390 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,391 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,391 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,403 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,418 - INFO - Loaded empty history file
+2025-09-26 15:02:06,418 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,419 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,419 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,427 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,428 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,428 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,428 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,443 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,444 - WARNING - Could not load existing history: Load failed
+2025-09-26 15:02:06,444 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,444 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,444 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,457 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,469 - INFO - Loaded empty history file
+2025-09-26 15:02:06,469 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,470 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,470 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,471 - INFO - Set operation: Addition
+2025-09-26 15:02:06,480 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,489 - INFO - Loaded empty history file
+2025-09-26 15:02:06,490 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,490 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,490 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,500 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,508 - INFO - Loaded empty history file
+2025-09-26 15:02:06,509 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,509 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,510 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,523 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,531 - INFO - Loaded empty history file
+2025-09-26 15:02:06,531 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,531 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,531 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,532 - INFO - Set operation: Addition
+2025-09-26 15:02:06,546 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,553 - INFO - Loaded empty history file
+2025-09-26 15:02:06,554 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,554 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,554 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,555 - INFO - Set operation: Addition
+2025-09-26 15:02:06,570 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,588 - INFO - Loaded empty history file
+2025-09-26 15:02:06,588 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,588 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,589 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,589 - INFO - Set operation: Addition
+2025-09-26 15:02:06,606 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,614 - INFO - Loaded empty history file
+2025-09-26 15:02:06,615 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,615 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,615 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,675 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,680 - INFO - Loaded empty history file
+2025-09-26 15:02:06,680 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,680 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,680 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,686 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,696 - INFO - Loaded empty history file
+2025-09-26 15:02:06,696 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,697 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,697 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,704 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,713 - INFO - Loaded empty history file
+2025-09-26 15:02:06,713 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,714 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,714 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,739 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,752 - INFO - Loaded empty history file
+2025-09-26 15:02:06,752 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,753 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,753 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,755 - INFO - Set operation: Addition
+2025-09-26 15:02:06,763 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,774 - INFO - Loaded empty history file
+2025-09-26 15:02:06,775 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,775 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,775 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,776 - INFO - Set operation: Subtraction
+2025-09-26 15:02:06,780 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,787 - INFO - Loaded empty history file
+2025-09-26 15:02:06,787 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,787 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,787 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,790 - INFO - Set operation: Multiplication
+2025-09-26 15:02:06,796 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,808 - INFO - Loaded empty history file
+2025-09-26 15:02:06,809 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,809 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,809 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,810 - INFO - Set operation: Division
+2025-09-26 15:02:06,814 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,821 - INFO - Loaded empty history file
+2025-09-26 15:02:06,821 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,821 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,821 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,822 - INFO - Set operation: Power
+2025-09-26 15:02:06,827 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,834 - INFO - Loaded empty history file
+2025-09-26 15:02:06,834 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,835 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,835 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,836 - INFO - Set operation: Root
+2025-09-26 15:02:06,843 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:02:06,850 - INFO - Loaded empty history file
+2025-09-26 15:02:06,851 - INFO - Calculator initialized with configuration
+2025-09-26 15:02:06,852 - INFO - Added observer: LoggingObserver
+2025-09-26 15:02:06,852 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:02:06,853 - INFO - Set operation: Addition
+2025-09-26 15:02:07,024 - INFO - History auto-saved
+2025-09-26 15:07:33,759 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:33,780 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:33,823 - INFO - Loaded 1 calculations from history
+2025-09-26 15:07:33,860 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:33,866 - INFO - Loaded empty history file
+2025-09-26 15:07:33,866 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:33,866 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:33,866 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:33,894 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:33,912 - INFO - Loaded empty history file
+2025-09-26 15:07:33,912 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:33,913 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:33,913 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:33,944 - INFO - Empty history saved
+2025-09-26 15:07:33,965 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:33,982 - INFO - Loaded empty history file
+2025-09-26 15:07:33,995 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:33,996 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:33,996 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:33,997 - INFO - Set operation: Addition
+2025-09-26 15:07:33,997 - INFO - Calculation performed: Addition (2, 3) = 5
+2025-09-26 15:07:34,014 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv
+2025-09-26 15:07:34,077 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,078 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,084 - ERROR - Failed to load history: CSV read error
+2025-09-26 15:07:34,090 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,092 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,092 - INFO - Set operation: Addition
+2025-09-26 15:07:34,100 - ERROR - Failed to save history: CSV write error
+2025-09-26 15:07:34,112 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,113 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,113 - INFO - Set operation: Addition
+2025-09-26 15:07:34,135 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,137 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,137 - INFO - Set operation: Addition
+2025-09-26 15:07:34,145 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,146 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,146 - INFO - Set operation: Addition
+2025-09-26 15:07:34,146 - ERROR - Validation error: Invalid number
+2025-09-26 15:07:34,156 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,157 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,157 - INFO - Set operation: Addition
+2025-09-26 15:07:34,158 - ERROR - Operation failed: Unexpected error
+2025-09-26 15:07:34,164 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,164 - WARNING - Could not load existing history: Load failed
+2025-09-26 15:07:34,164 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,174 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,175 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,175 - INFO - Set operation: Addition
+2025-09-26 15:07:34,182 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,183 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,194 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,195 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,200 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,200 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,209 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,210 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,210 - INFO - Set operation: Addition
+2025-09-26 15:07:34,216 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,217 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,218 - INFO - Loaded empty history file
+2025-09-26 15:07:34,227 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,229 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,230 - INFO - No history file found - starting with empty history
+2025-09-26 15:07:34,234 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,235 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,241 - INFO - Empty history saved
+2025-09-26 15:07:34,247 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,248 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,248 - INFO - Added observer: Mock
+2025-09-26 15:07:34,248 - INFO - Set operation: Addition
+2025-09-26 15:07:34,253 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,256 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,263 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,270 - INFO - Loaded empty history file
+2025-09-26 15:07:34,271 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,318 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,325 - INFO - Loaded empty history file
+2025-09-26 15:07:34,325 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,326 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,326 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,336 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,343 - INFO - Loaded empty history file
+2025-09-26 15:07:34,344 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,344 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,345 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,352 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,363 - INFO - Loaded empty history file
+2025-09-26 15:07:34,364 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,365 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,365 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,373 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,384 - INFO - Loaded empty history file
+2025-09-26 15:07:34,384 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,384 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,384 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,392 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,401 - INFO - Loaded empty history file
+2025-09-26 15:07:34,402 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,402 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,402 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,409 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,418 - INFO - Loaded empty history file
+2025-09-26 15:07:34,419 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,419 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,419 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,426 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,434 - INFO - Loaded empty history file
+2025-09-26 15:07:34,434 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,435 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,435 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,441 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,445 - INFO - Loaded empty history file
+2025-09-26 15:07:34,445 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,445 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,445 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,452 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,458 - INFO - Loaded empty history file
+2025-09-26 15:07:34,458 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,458 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,458 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,464 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,472 - INFO - Loaded empty history file
+2025-09-26 15:07:34,472 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,472 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,472 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,478 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,481 - INFO - Loaded empty history file
+2025-09-26 15:07:34,481 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,481 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,482 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,490 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,497 - INFO - Loaded empty history file
+2025-09-26 15:07:34,497 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,497 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,497 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,505 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,506 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,506 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,506 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,513 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,514 - WARNING - Could not load existing history: Load failed
+2025-09-26 15:07:34,514 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,514 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,514 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,522 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,528 - INFO - Loaded empty history file
+2025-09-26 15:07:34,528 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,528 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,528 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,529 - INFO - Set operation: Addition
+2025-09-26 15:07:34,533 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,540 - INFO - Loaded empty history file
+2025-09-26 15:07:34,541 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,541 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,541 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,546 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,550 - INFO - Loaded empty history file
+2025-09-26 15:07:34,550 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,551 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,551 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,562 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,568 - INFO - Loaded empty history file
+2025-09-26 15:07:34,568 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,568 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,569 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,570 - INFO - Set operation: Addition
+2025-09-26 15:07:34,576 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,583 - INFO - Loaded empty history file
+2025-09-26 15:07:34,583 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,583 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,583 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,584 - INFO - Set operation: Addition
+2025-09-26 15:07:34,589 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,594 - INFO - Loaded empty history file
+2025-09-26 15:07:34,595 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,595 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,595 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,596 - INFO - Set operation: Addition
+2025-09-26 15:07:34,602 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,605 - INFO - Loaded empty history file
+2025-09-26 15:07:34,605 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,605 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,605 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,653 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,656 - INFO - Loaded empty history file
+2025-09-26 15:07:34,656 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,656 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,656 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,662 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,666 - INFO - Loaded empty history file
+2025-09-26 15:07:34,666 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,666 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,667 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,671 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,674 - INFO - Loaded empty history file
+2025-09-26 15:07:34,674 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,674 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,674 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,689 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,693 - INFO - Loaded empty history file
+2025-09-26 15:07:34,694 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,694 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,694 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,695 - INFO - Set operation: Addition
+2025-09-26 15:07:34,702 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,709 - INFO - Loaded empty history file
+2025-09-26 15:07:34,709 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,709 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,709 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,710 - INFO - Set operation: Subtraction
+2025-09-26 15:07:34,713 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,716 - INFO - Loaded empty history file
+2025-09-26 15:07:34,717 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,717 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,717 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,717 - INFO - Set operation: Multiplication
+2025-09-26 15:07:34,719 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,724 - INFO - Loaded empty history file
+2025-09-26 15:07:34,724 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,724 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,725 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,725 - INFO - Set operation: Division
+2025-09-26 15:07:34,730 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,736 - INFO - Loaded empty history file
+2025-09-26 15:07:34,736 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,736 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,736 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,736 - INFO - Set operation: Power
+2025-09-26 15:07:34,738 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,741 - INFO - Loaded empty history file
+2025-09-26 15:07:34,741 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,741 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,741 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,741 - INFO - Set operation: Root
+2025-09-26 15:07:34,744 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:07:34,749 - INFO - Loaded empty history file
+2025-09-26 15:07:34,749 - INFO - Calculator initialized with configuration
+2025-09-26 15:07:34,749 - INFO - Added observer: LoggingObserver
+2025-09-26 15:07:34,749 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:07:34,750 - INFO - Set operation: Addition
+2025-09-26 15:07:34,985 - INFO - History auto-saved
+2025-09-26 15:10:29,322 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,323 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,329 - INFO - Loaded 1 calculations from history
+2025-09-26 15:10:29,349 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,357 - INFO - Loaded empty history file
+2025-09-26 15:10:29,357 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,357 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,357 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,362 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,372 - INFO - Loaded empty history file
+2025-09-26 15:10:29,372 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,373 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,373 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,378 - INFO - Empty history saved
+2025-09-26 15:10:29,384 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,392 - INFO - Loaded empty history file
+2025-09-26 15:10:29,392 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,393 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,393 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,393 - INFO - Set operation: Addition
+2025-09-26 15:10:29,393 - INFO - Calculation performed: Addition (2, 3) = 5
+2025-09-26 15:10:29,396 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv
+2025-09-26 15:10:29,425 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,426 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,430 - ERROR - Failed to load history: CSV read error
+2025-09-26 15:10:29,440 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,441 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,442 - INFO - Set operation: Addition
+2025-09-26 15:10:29,446 - ERROR - Failed to save history: CSV write error
+2025-09-26 15:10:29,451 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,453 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,454 - INFO - Set operation: Addition
+2025-09-26 15:10:29,463 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,464 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,464 - INFO - Set operation: Addition
+2025-09-26 15:10:29,476 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,477 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,477 - INFO - Set operation: Addition
+2025-09-26 15:10:29,477 - ERROR - Validation error: Invalid number
+2025-09-26 15:10:29,484 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,485 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,485 - INFO - Set operation: Addition
+2025-09-26 15:10:29,489 - ERROR - Operation failed: Unexpected error
+2025-09-26 15:10:29,497 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,498 - WARNING - Could not load existing history: Load failed
+2025-09-26 15:10:29,498 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,507 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,509 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,509 - INFO - Set operation: Addition
+2025-09-26 15:10:29,519 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,519 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,530 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,530 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,536 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,537 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,548 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,550 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,550 - INFO - Set operation: Addition
+2025-09-26 15:10:29,558 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,559 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,561 - INFO - Loaded empty history file
+2025-09-26 15:10:29,567 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,568 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,568 - INFO - No history file found - starting with empty history
+2025-09-26 15:10:29,573 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,574 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,581 - INFO - Empty history saved
+2025-09-26 15:10:29,587 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,587 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,588 - INFO - Added observer: Mock
+2025-09-26 15:10:29,588 - INFO - Set operation: Addition
+2025-09-26 15:10:29,597 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,598 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,603 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,607 - INFO - Loaded empty history file
+2025-09-26 15:10:29,608 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,661 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,671 - INFO - Loaded empty history file
+2025-09-26 15:10:29,671 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,672 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,673 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,682 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,689 - INFO - Loaded empty history file
+2025-09-26 15:10:29,689 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,689 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,690 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,700 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,707 - INFO - Loaded empty history file
+2025-09-26 15:10:29,708 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,708 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,708 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,713 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,721 - INFO - Loaded empty history file
+2025-09-26 15:10:29,721 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,721 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,721 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,729 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,737 - INFO - Loaded empty history file
+2025-09-26 15:10:29,737 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,737 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,737 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,745 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,751 - INFO - Loaded empty history file
+2025-09-26 15:10:29,751 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,751 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,751 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,762 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,768 - INFO - Loaded empty history file
+2025-09-26 15:10:29,768 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,768 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,768 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,775 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,780 - INFO - Loaded empty history file
+2025-09-26 15:10:29,780 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,780 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,780 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,788 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,795 - INFO - Loaded empty history file
+2025-09-26 15:10:29,796 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,796 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,796 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,800 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,808 - INFO - Loaded empty history file
+2025-09-26 15:10:29,808 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,808 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,808 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,816 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,826 - INFO - Loaded empty history file
+2025-09-26 15:10:29,826 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,826 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,826 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,832 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,837 - INFO - Loaded empty history file
+2025-09-26 15:10:29,837 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,837 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,837 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,848 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,850 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,850 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,850 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,856 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,857 - WARNING - Could not load existing history: Load failed
+2025-09-26 15:10:29,857 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,857 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,857 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,867 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,875 - INFO - Loaded empty history file
+2025-09-26 15:10:29,875 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,875 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,875 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,877 - INFO - Set operation: Addition
+2025-09-26 15:10:29,883 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,893 - INFO - Loaded empty history file
+2025-09-26 15:10:29,894 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,894 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,894 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,901 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,906 - INFO - Loaded empty history file
+2025-09-26 15:10:29,906 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,906 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,906 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,913 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,918 - INFO - Loaded empty history file
+2025-09-26 15:10:29,918 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,918 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,918 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,919 - INFO - Set operation: Addition
+2025-09-26 15:10:29,923 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,931 - INFO - Loaded empty history file
+2025-09-26 15:10:29,931 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,931 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,931 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,932 - INFO - Set operation: Addition
+2025-09-26 15:10:29,939 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,947 - INFO - Loaded empty history file
+2025-09-26 15:10:29,948 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,948 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,948 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:29,948 - INFO - Set operation: Addition
+2025-09-26 15:10:29,956 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:29,960 - INFO - Loaded empty history file
+2025-09-26 15:10:29,961 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:29,961 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:29,961 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,012 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:30,017 - INFO - Loaded empty history file
+2025-09-26 15:10:30,017 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:30,017 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:30,017 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,020 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:30,023 - INFO - Loaded empty history file
+2025-09-26 15:10:30,023 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:30,023 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:30,023 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,025 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:30,031 - INFO - Loaded empty history file
+2025-09-26 15:10:30,031 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:30,032 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:30,032 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,041 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:30,047 - INFO - Loaded empty history file
+2025-09-26 15:10:30,048 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:30,048 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:30,048 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,050 - INFO - Set operation: Addition
+2025-09-26 15:10:30,053 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:30,063 - INFO - Loaded empty history file
+2025-09-26 15:10:30,063 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:30,063 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:30,063 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,064 - INFO - Set operation: Subtraction
+2025-09-26 15:10:30,067 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:30,072 - INFO - Loaded empty history file
+2025-09-26 15:10:30,072 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:30,072 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:30,072 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,072 - INFO - Set operation: Multiplication
+2025-09-26 15:10:30,074 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:30,077 - INFO - Loaded empty history file
+2025-09-26 15:10:30,077 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:30,077 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:30,077 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,077 - INFO - Set operation: Division
+2025-09-26 15:10:30,079 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:30,083 - INFO - Loaded empty history file
+2025-09-26 15:10:30,083 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:30,083 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:30,083 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,084 - INFO - Set operation: Power
+2025-09-26 15:10:30,086 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:30,089 - INFO - Loaded empty history file
+2025-09-26 15:10:30,089 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:30,089 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:30,089 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,089 - INFO - Set operation: Root
+2025-09-26 15:10:30,093 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 15:10:30,097 - INFO - Loaded empty history file
+2025-09-26 15:10:30,097 - INFO - Calculator initialized with configuration
+2025-09-26 15:10:30,097 - INFO - Added observer: LoggingObserver
+2025-09-26 15:10:30,097 - INFO - Added observer: AutoSaveObserver
+2025-09-26 15:10:30,097 - INFO - Set operation: Addition
+2025-09-26 15:10:30,204 - INFO - History auto-saved

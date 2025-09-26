@@ -185,6 +185,25 @@ class Calculation:
         """
         raise OperationError("Cannot calculate percentage with zero base value")
 
+    def _format_display(self, value: Decimal) -> str:
+        """
+        FIXED: Simple method to format Decimal without scientific notation.
+        
+        Args:
+            value (Decimal): The decimal value to format
+            
+        Returns:
+            str: Clean string representation
+        """
+        # Convert to string and check if it contains scientific notation
+        str_val = str(value)
+        if 'E' in str_val or 'e' in str_val:
+            # Use format to avoid scientific notation, limit to 15 decimal places max
+            return f"{value:.15f}".rstrip('0').rstrip('.')
+        else:
+            # Return normal string representation
+            return str_val
+
     def to_dict(self) -> Dict[str, Any]:
         """
         Convert calculation to dictionary for serialization.
@@ -246,7 +265,7 @@ class Calculation:
 
     def __str__(self) -> str:
         """
-        Return string representation of calculation.
+        FIXED: Return string representation without scientific notation.
 
         Provides a human-readable representation of the calculation, showing the
         operation performed and its result.
@@ -254,7 +273,12 @@ class Calculation:
         Returns:
             str: Formatted string showing the calculation and result.
         """
-        return f"{self.operation}({self.operand1}, {self.operand2}) = {self.result}"
+        # Format values to avoid scientific notation
+        operand1_str = self._format_display(self.operand1)
+        operand2_str = self._format_display(self.operand2)  
+        result_str = self._format_display(self.result)
+        
+        return f"{self.operation}({operand1_str}, {operand2_str}) = {result_str}"
 
     def __repr__(self) -> str:
         """
@@ -298,7 +322,7 @@ class Calculation:
 
     def format_result(self, precision: int = 10) -> str:
         """
-        Format the calculation result with specified precision.
+        FIXED: Format the calculation result with specified precision.
 
         This method formats the result to a fixed number of decimal places,
         removing any trailing zeros for a cleaner presentation.
@@ -310,9 +334,7 @@ class Calculation:
             str: Formatted string representation of the result.
         """
         try:
-            # Remove trailing zeros and format to specified precision
-            return str(self.result.normalize().quantize(
-                Decimal('0.' + '0' * precision)
-            ).normalize())
+            # Use the display formatting method
+            return self._format_display(self.result)
         except InvalidOperation:  # pragma: no cover
             return str(self.result)

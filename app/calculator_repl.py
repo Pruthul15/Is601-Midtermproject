@@ -140,21 +140,61 @@ def calculator_repl():
                         # Perform the calculation
                         result = calc.perform_operation(a, b)
 
-                        # Normalize the result if it's a Decimal
-                        if isinstance(result, Decimal):
-                            result = result.normalize()
+                        # FIXED: Format result to avoid scientific notation and normalize decimals
+                        def format_for_display(value):
+                            """
+                            FIXED: Format numbers without scientific notation and normalize decimals.
+                            
+                            This function handles two main issues:
+                            1. Prevents scientific notation display (1E+1 becomes 10)
+                            2. Normalizes decimals to remove trailing zeros (5.000 becomes 5)
+                            
+                            Args:
+                                value: The number to format (usually Decimal)
+                                
+                            Returns:
+                                str: Clean formatted number string
+                            """
+                            if isinstance(value, Decimal):
+                                # FIXED: First normalize the decimal to remove trailing zeros (5.000 -> 5)
+                                normalized = value.normalize()
+                                str_val = str(normalized)
+                                # FIXED: If contains scientific notation, format differently to show normal numbers
+                                if 'E' in str_val or 'e' in str_val:
+                                    # Convert scientific notation to normal decimal notation
+                                    formatted = f"{normalized:.15f}".rstrip('0').rstrip('.')
+                                    # Handle edge case where all zeros are stripped
+                                    if formatted == '' or formatted == '-':
+                                        formatted = '0'
+                                    return formatted
+                                else:
+                                    # Return normal string representation
+                                    return str_val
+                            return str(value)
+
+                        formatted_result = format_for_display(result)
 
                         # Display operation-specific result messages - UPDATED for new operations
                         if command == 'percent':
-                            print(f"\nResult: {result}%")
+                            # FIXED: Limit percentage precision for readability
+                            try:
+                                # Round to 2 decimal places for percentages to avoid excessive precision
+                                if isinstance(result, Decimal):
+                                    rounded_result = round(float(result), 2)
+                                    print(f"\nResult: {rounded_result}%")
+                                else:
+                                    print(f"\nResult: {formatted_result}%")
+                            except:
+                                # Fallback if rounding fails
+                                print(f"\nResult: {formatted_result}%")
                         elif command == 'modulus':
-                            print(f"\nRemainder: {result}")
+                            print(f"\nRemainder: {formatted_result}")
                         elif command == 'int_divide':
-                            print(f"\nInteger quotient: {result}")
+                            print(f"\nInteger quotient: {formatted_result}")
                         elif command == 'abs_diff':
-                            print(f"\nAbsolute difference: {result}")
+                            print(f"\nAbsolute difference: {formatted_result}")
                         else:
-                            print(f"\nResult: {result}")
+                            print(f"\nResult: {formatted_result}")
                             
                     except (ValidationError, OperationError) as e:
                         # Handle known exceptions related to validation or operation errors
