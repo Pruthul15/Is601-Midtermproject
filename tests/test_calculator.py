@@ -1,5 +1,5 @@
 ########################
-# Calculator Tests - Fixed with Proper Test Isolation
+# Calculator Tests - Fixed with Proper Test Isolation and Colorama Support
 ########################
 
 import datetime
@@ -156,27 +156,37 @@ def test_clear_history(calculator):
     assert calculator.undo_stack == []
     assert calculator.redo_stack == []
 
-# Test REPL Commands (using patches for input/output handling)
+# FIXED: Test REPL Commands with Colorama Support
 @patch('builtins.input', side_effect=['exit'])
-@patch('builtins.print')
-def test_calculator_repl_exit(mock_print, mock_input):
+@patch('app.calculator_repl.ColorPrinter.success')
+def test_calculator_repl_exit(mock_success, mock_input):
+    """Test calculator REPL exit functionality with colorama support."""
     with patch('app.calculator.Calculator.save_history') as mock_save_history:
         calculator_repl()
         mock_save_history.assert_called_once()
-        mock_print.assert_any_call("History saved successfully.")
-        mock_print.assert_any_call("Goodbye!")
+        mock_success.assert_any_call("History saved successfully. Goodbye!")
 
 @patch('builtins.input', side_effect=['help', 'exit'])
-@patch('builtins.print')
-def test_calculator_repl_help(mock_print, mock_input):
-    calculator_repl()
-    mock_print.assert_any_call("\nAvailable commands:")
+@patch('app.calculator_repl.ColorPrinter.header')
+def test_calculator_repl_help(mock_header, mock_input):
+    """Test calculator REPL help command with colorama support."""
+    with patch('app.calculator_repl.ColorPrinter.success'):
+        with patch('app.calculator_repl.ColorPrinter.operation'):
+            with patch('app.calculator_repl.ColorPrinter.info'):
+                with patch('app.calculator_repl.ColorPrinter.warning'):
+                    calculator_repl()
+                    mock_header.assert_any_call("\nAvailable commands:")
 
 @patch('builtins.input', side_effect=['add', '2', '3', 'exit'])
-@patch('builtins.print')
-def test_calculator_repl_addition(mock_print, mock_input):
-    calculator_repl()
-    mock_print.assert_any_call("\nResult: 5")
+@patch('app.calculator_repl.ColorPrinter.result')
+def test_calculator_repl_addition(mock_result, mock_input):
+    """Test calculator REPL addition operation with colorama support."""
+    with patch('app.calculator_repl.ColorPrinter.success'):
+        with patch('app.calculator_repl.ColorPrinter.operation'):
+            with patch('app.calculator_repl.ColorPrinter.info'):
+                with patch('app.calculator_repl.ColorPrinter.prompt'):
+                    calculator_repl()
+                    mock_result.assert_any_call("\nResult: 5")
 
 # ========================
 # Enhanced Coverage Tests - FIXED with Proper Isolation
