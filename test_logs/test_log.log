@@ -1,0 +1,1478 @@
+2025-09-19 19:43:06,344 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,344 - INFO - No history file found - starting with empty history
+2025-09-19 19:43:06,344 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,344 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,344 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,346 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,347 - INFO - No history file found - starting with empty history
+2025-09-19 19:43:06,347 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,347 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,347 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,351 - INFO - Empty history saved
+2025-09-19 19:43:06,354 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,357 - INFO - Loaded empty history file
+2025-09-19 19:43:06,358 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,358 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,358 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,359 - INFO - Set operation: Addition
+2025-09-19 19:43:06,360 - INFO - Calculation performed: Addition (2, 3) = 5
+2025-09-19 19:43:06,363 - INFO - History saved successfully to /home/ppatel/projects/assignment5/test_history/test_history.csv
+2025-09-19 19:43:06,369 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,370 - ERROR - Failed to load history: CSV read error
+2025-09-19 19:43:06,370 - WARNING - Could not load existing history: Failed to load history: CSV read error
+2025-09-19 19:43:06,370 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,373 - ERROR - Failed to load history: CSV read error
+2025-09-19 19:43:06,378 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,381 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,381 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,381 - INFO - Set operation: Addition
+2025-09-19 19:43:06,383 - ERROR - Failed to save history: CSV write error
+2025-09-19 19:43:06,385 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,385 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,385 - INFO - Set operation: Addition
+2025-09-19 19:43:06,388 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,391 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,391 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,391 - INFO - Set operation: Addition
+2025-09-19 19:43:06,396 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,398 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,398 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,398 - INFO - Set operation: Addition
+2025-09-19 19:43:06,398 - ERROR - Validation error: Invalid number
+2025-09-19 19:43:06,401 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,403 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,403 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,403 - INFO - Set operation: Addition
+2025-09-19 19:43:06,404 - ERROR - Operation failed: Unexpected error
+2025-09-19 19:43:06,407 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,408 - WARNING - Could not load existing history: Load failed
+2025-09-19 19:43:06,408 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,410 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,416 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,416 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,416 - INFO - Set operation: Addition
+2025-09-19 19:43:06,438 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,441 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,441 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,461 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,464 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,464 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,466 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,468 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,468 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,470 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,472 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,472 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,472 - INFO - Set operation: Addition
+2025-09-19 19:43:06,489 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,490 - INFO - Loaded empty history file
+2025-09-19 19:43:06,490 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,491 - INFO - Loaded empty history file
+2025-09-19 19:43:06,497 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,497 - INFO - No history file found - starting with empty history
+2025-09-19 19:43:06,497 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,497 - INFO - No history file found - starting with empty history
+2025-09-19 19:43:06,499 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,501 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,501 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,503 - INFO - History saved successfully to /home/ppatel/projects/assignment5/test_history/test_history.csv
+2025-09-19 19:43:06,505 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,507 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,507 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,507 - INFO - Added observer: Mock
+2025-09-19 19:43:06,507 - INFO - Set operation: Addition
+2025-09-19 19:43:06,510 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,514 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,514 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,516 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,518 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,518 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,537 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,539 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,539 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,539 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,539 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,543 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,549 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,549 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,549 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,549 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,552 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,554 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,554 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,554 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,554 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,557 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,559 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,560 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,560 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,561 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,567 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,569 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,569 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,569 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,570 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,573 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,575 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,575 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,575 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,576 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,583 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,587 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,587 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,587 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,587 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,590 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,592 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,592 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,593 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,593 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,597 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,601 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,601 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,601 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,601 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,604 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,606 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,606 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,606 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,606 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,609 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,611 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,612 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,612 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,612 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,615 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,619 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,619 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,619 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,620 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,624 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,624 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,625 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,625 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,627 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,628 - WARNING - Could not load existing history: Load failed
+2025-09-19 19:43:06,628 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,628 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,628 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,633 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,637 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,637 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,637 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,637 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,638 - INFO - Set operation: Addition
+2025-09-19 19:43:06,640 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,642 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,642 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,642 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,642 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,646 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,650 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,651 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,651 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,651 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,655 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,658 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,658 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,658 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,658 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,658 - INFO - Set operation: Addition
+2025-09-19 19:43:06,661 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,663 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,663 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,663 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,663 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,664 - INFO - Set operation: Addition
+2025-09-19 19:43:06,670 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,672 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,672 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,672 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,673 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,673 - INFO - Set operation: Addition
+2025-09-19 19:43:06,675 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,677 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,677 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,677 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,677 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,680 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,683 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,684 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,684 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,684 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,688 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,691 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,691 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,691 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,691 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,725 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,727 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,727 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,727 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,727 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,733 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,735 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,735 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,735 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,735 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,735 - INFO - Set operation: Addition
+2025-09-19 19:43:06,737 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,739 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,739 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,739 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,739 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,739 - INFO - Set operation: Subtraction
+2025-09-19 19:43:06,741 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,742 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,742 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,742 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,742 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,743 - INFO - Set operation: Multiplication
+2025-09-19 19:43:06,744 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,746 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,746 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,746 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,746 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,746 - INFO - Set operation: Division
+2025-09-19 19:43:06,748 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,750 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,750 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,750 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,750 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,751 - INFO - Set operation: Power
+2025-09-19 19:43:06,754 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,756 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,756 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,756 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,756 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,757 - INFO - Set operation: Root
+2025-09-19 19:43:06,760 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:06,762 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:06,762 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:06,762 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:06,762 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:06,762 - INFO - Set operation: Addition
+2025-09-19 19:43:06,798 - INFO - History auto-saved
+2025-09-19 19:43:20,558 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,560 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:20,561 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,561 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,561 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,564 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,572 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:20,572 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,572 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,572 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,576 - INFO - History saved successfully to /home/ppatel/projects/assignment5/test_history/test_history.csv
+2025-09-19 19:43:20,578 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,581 - INFO - Loaded 1 calculations from history
+2025-09-19 19:43:20,581 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,581 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,581 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,581 - INFO - Set operation: Addition
+2025-09-19 19:43:20,581 - INFO - Calculation performed: Addition (2, 3) = 5
+2025-09-19 19:43:20,583 - INFO - History saved successfully to /home/ppatel/projects/assignment5/test_history/test_history.csv
+2025-09-19 19:43:20,596 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,596 - ERROR - Failed to load history: CSV read error
+2025-09-19 19:43:20,596 - WARNING - Could not load existing history: Failed to load history: CSV read error
+2025-09-19 19:43:20,596 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,597 - ERROR - Failed to load history: CSV read error
+2025-09-19 19:43:20,599 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,604 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,604 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,604 - INFO - Set operation: Addition
+2025-09-19 19:43:20,608 - ERROR - Failed to save history: CSV write error
+2025-09-19 19:43:20,613 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,614 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,614 - INFO - Set operation: Addition
+2025-09-19 19:43:20,617 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,622 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,622 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,622 - INFO - Set operation: Addition
+2025-09-19 19:43:20,628 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,631 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,631 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,631 - INFO - Set operation: Addition
+2025-09-19 19:43:20,632 - ERROR - Validation error: Invalid number
+2025-09-19 19:43:20,634 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,639 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,639 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,639 - INFO - Set operation: Addition
+2025-09-19 19:43:20,640 - ERROR - Operation failed: Unexpected error
+2025-09-19 19:43:20,646 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,646 - WARNING - Could not load existing history: Load failed
+2025-09-19 19:43:20,646 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,649 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,651 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,651 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,652 - INFO - Set operation: Addition
+2025-09-19 19:43:20,678 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,680 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,680 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,702 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,705 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,706 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,709 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,712 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,712 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,715 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,717 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,717 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,717 - INFO - Set operation: Addition
+2025-09-19 19:43:20,733 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,733 - INFO - Loaded empty history file
+2025-09-19 19:43:20,733 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,734 - INFO - Loaded empty history file
+2025-09-19 19:43:20,735 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,736 - INFO - No history file found - starting with empty history
+2025-09-19 19:43:20,736 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,736 - INFO - No history file found - starting with empty history
+2025-09-19 19:43:20,738 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,741 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,741 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,743 - INFO - History saved successfully to /home/ppatel/projects/assignment5/test_history/test_history.csv
+2025-09-19 19:43:20,746 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,748 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,748 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,748 - INFO - Added observer: Mock
+2025-09-19 19:43:20,748 - INFO - Set operation: Addition
+2025-09-19 19:43:20,750 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,752 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,752 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,754 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,757 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,757 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,775 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,779 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,779 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,779 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,779 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,782 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,784 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,784 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,784 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,784 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,786 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,788 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,789 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,789 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,789 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,794 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,798 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,798 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,798 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,798 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,801 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,803 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,803 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,803 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,803 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,806 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,809 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,810 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,810 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,810 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,814 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,816 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,816 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,816 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,816 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,819 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,821 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,821 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,821 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,821 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,826 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,830 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,830 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,830 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,830 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,834 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,836 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,836 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,836 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,836 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,839 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,841 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,842 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,842 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,842 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,845 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,849 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,849 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,849 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,849 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,852 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,853 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,853 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,853 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,855 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,856 - WARNING - Could not load existing history: Load failed
+2025-09-19 19:43:20,856 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,856 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,856 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,859 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,862 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,863 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,863 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,863 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,864 - INFO - Set operation: Addition
+2025-09-19 19:43:20,867 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,869 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,869 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,869 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,869 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,871 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,873 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,874 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,874 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,874 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,879 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,883 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,883 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,883 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,883 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,883 - INFO - Set operation: Addition
+2025-09-19 19:43:20,886 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,889 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,889 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,889 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,889 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,889 - INFO - Set operation: Addition
+2025-09-19 19:43:20,892 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,895 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,895 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,895 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,895 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,896 - INFO - Set operation: Addition
+2025-09-19 19:43:20,900 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,902 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,902 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,902 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,903 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,906 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,908 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,908 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,908 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,908 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,912 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,916 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,916 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,916 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,916 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,947 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,949 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,950 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,950 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,950 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,955 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,957 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,957 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,957 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,957 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,958 - INFO - Set operation: Addition
+2025-09-19 19:43:20,959 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,963 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,963 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,963 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,963 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,964 - INFO - Set operation: Subtraction
+2025-09-19 19:43:20,967 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,969 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,969 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,969 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,969 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,970 - INFO - Set operation: Multiplication
+2025-09-19 19:43:20,971 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,973 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,973 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,973 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,973 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,973 - INFO - Set operation: Division
+2025-09-19 19:43:20,974 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,976 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,976 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,976 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,976 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,976 - INFO - Set operation: Power
+2025-09-19 19:43:20,978 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,980 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,981 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,981 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,981 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,981 - INFO - Set operation: Root
+2025-09-19 19:43:20,984 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:43:20,986 - INFO - Loaded 2 calculations from history
+2025-09-19 19:43:20,986 - INFO - Calculator initialized with configuration
+2025-09-19 19:43:20,986 - INFO - Added observer: LoggingObserver
+2025-09-19 19:43:20,986 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:43:20,986 - INFO - Set operation: Addition
+2025-09-19 19:43:21,025 - INFO - History auto-saved
+2025-09-19 19:47:33,781 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,782 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,785 - INFO - Loaded 1 calculations from history
+2025-09-19 19:47:33,793 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,796 - INFO - Loaded 2 calculations from history
+2025-09-19 19:47:33,796 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,796 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,796 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,800 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,803 - INFO - Loaded 2 calculations from history
+2025-09-19 19:47:33,803 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,803 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,803 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,806 - INFO - History saved successfully to /home/ppatel/projects/assignment5/test_history/test_history.csv
+2025-09-19 19:47:33,808 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,810 - INFO - Loaded 2 calculations from history
+2025-09-19 19:47:33,810 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,810 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,810 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,811 - INFO - Set operation: Addition
+2025-09-19 19:47:33,811 - INFO - Calculation performed: Addition (2, 3) = 5
+2025-09-19 19:47:33,813 - INFO - History saved successfully to /home/ppatel/projects/assignment5/test_history/test_history.csv
+2025-09-19 19:47:33,824 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,825 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,826 - ERROR - Failed to load history: CSV read error
+2025-09-19 19:47:33,828 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,828 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,828 - INFO - Set operation: Addition
+2025-09-19 19:47:33,830 - ERROR - Failed to save history: CSV write error
+2025-09-19 19:47:33,835 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,835 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,836 - INFO - Set operation: Addition
+2025-09-19 19:47:33,839 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,839 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,839 - INFO - Set operation: Addition
+2025-09-19 19:47:33,842 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,842 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,842 - INFO - Set operation: Addition
+2025-09-19 19:47:33,842 - ERROR - Validation error: Invalid number
+2025-09-19 19:47:33,845 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,845 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,846 - INFO - Set operation: Addition
+2025-09-19 19:47:33,846 - ERROR - Operation failed: Unexpected error
+2025-09-19 19:47:33,849 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,850 - WARNING - Could not load existing history: Load failed
+2025-09-19 19:47:33,850 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,853 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,853 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,854 - INFO - Set operation: Addition
+2025-09-19 19:47:33,857 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,857 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,860 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,860 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,862 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,862 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,865 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,866 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,866 - INFO - Set operation: Addition
+2025-09-19 19:47:33,871 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,872 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,872 - INFO - Loaded empty history file
+2025-09-19 19:47:33,875 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,875 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,875 - INFO - No history file found - starting with empty history
+2025-09-19 19:47:33,878 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,878 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,880 - INFO - Empty history saved
+2025-09-19 19:47:33,883 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,883 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,883 - INFO - Added observer: Mock
+2025-09-19 19:47:33,883 - INFO - Set operation: Addition
+2025-09-19 19:47:33,887 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,888 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,889 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,891 - INFO - Loaded empty history file
+2025-09-19 19:47:33,891 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,907 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,909 - INFO - Loaded empty history file
+2025-09-19 19:47:33,910 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,910 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,910 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,913 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,916 - INFO - Loaded empty history file
+2025-09-19 19:47:33,916 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,916 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,916 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,921 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,924 - INFO - Loaded empty history file
+2025-09-19 19:47:33,924 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,924 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,924 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,927 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,929 - INFO - Loaded empty history file
+2025-09-19 19:47:33,929 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,929 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,929 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,934 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,938 - INFO - Loaded empty history file
+2025-09-19 19:47:33,938 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,938 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,938 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,941 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,944 - INFO - Loaded empty history file
+2025-09-19 19:47:33,944 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,944 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,944 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,947 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,950 - INFO - Loaded empty history file
+2025-09-19 19:47:33,950 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,950 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,950 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,956 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,959 - INFO - Loaded empty history file
+2025-09-19 19:47:33,959 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,959 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,959 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,964 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,966 - INFO - Loaded empty history file
+2025-09-19 19:47:33,967 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,967 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,967 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,972 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,974 - INFO - Loaded empty history file
+2025-09-19 19:47:33,975 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,975 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,975 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,978 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,979 - INFO - Loaded empty history file
+2025-09-19 19:47:33,980 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,980 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,980 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,982 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,985 - INFO - Loaded empty history file
+2025-09-19 19:47:33,985 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,985 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,985 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,989 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,990 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,990 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,990 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,993 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,993 - WARNING - Could not load existing history: Load failed
+2025-09-19 19:47:33,993 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,993 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,993 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,996 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:33,998 - INFO - Loaded empty history file
+2025-09-19 19:47:33,998 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:33,998 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:33,998 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:33,998 - INFO - Set operation: Addition
+2025-09-19 19:47:34,001 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,004 - INFO - Loaded empty history file
+2025-09-19 19:47:34,004 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,004 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,005 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,008 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,010 - INFO - Loaded empty history file
+2025-09-19 19:47:34,010 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,010 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,010 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,013 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,015 - INFO - Loaded empty history file
+2025-09-19 19:47:34,015 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,015 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,015 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,015 - INFO - Set operation: Addition
+2025-09-19 19:47:34,018 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,020 - INFO - Loaded empty history file
+2025-09-19 19:47:34,021 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,021 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,021 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,021 - INFO - Set operation: Addition
+2025-09-19 19:47:34,025 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,027 - INFO - Loaded empty history file
+2025-09-19 19:47:34,027 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,027 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,027 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,027 - INFO - Set operation: Addition
+2025-09-19 19:47:34,029 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,032 - INFO - Loaded empty history file
+2025-09-19 19:47:34,032 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,033 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,033 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,037 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,041 - INFO - Loaded empty history file
+2025-09-19 19:47:34,041 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,041 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,041 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,044 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,046 - INFO - Loaded empty history file
+2025-09-19 19:47:34,046 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,046 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,047 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,077 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,079 - INFO - Loaded empty history file
+2025-09-19 19:47:34,080 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,080 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,080 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,084 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,087 - INFO - Loaded empty history file
+2025-09-19 19:47:34,087 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,087 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,087 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,087 - INFO - Set operation: Addition
+2025-09-19 19:47:34,089 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,091 - INFO - Loaded empty history file
+2025-09-19 19:47:34,091 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,091 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,092 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,092 - INFO - Set operation: Subtraction
+2025-09-19 19:47:34,094 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,097 - INFO - Loaded empty history file
+2025-09-19 19:47:34,097 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,097 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,097 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,098 - INFO - Set operation: Multiplication
+2025-09-19 19:47:34,099 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,101 - INFO - Loaded empty history file
+2025-09-19 19:47:34,101 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,101 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,101 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,101 - INFO - Set operation: Division
+2025-09-19 19:47:34,103 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,105 - INFO - Loaded empty history file
+2025-09-19 19:47:34,105 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,105 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,105 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,106 - INFO - Set operation: Power
+2025-09-19 19:47:34,107 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,109 - INFO - Loaded empty history file
+2025-09-19 19:47:34,109 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,109 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,109 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,109 - INFO - Set operation: Root
+2025-09-19 19:47:34,111 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-19 19:47:34,113 - INFO - Loaded empty history file
+2025-09-19 19:47:34,113 - INFO - Calculator initialized with configuration
+2025-09-19 19:47:34,113 - INFO - Added observer: LoggingObserver
+2025-09-19 19:47:34,113 - INFO - Added observer: AutoSaveObserver
+2025-09-19 19:47:34,113 - INFO - Set operation: Addition
+2025-09-19 19:47:34,150 - INFO - History auto-saved
+2025-09-22 17:29:24,906 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,907 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,912 - INFO - Loaded 1 calculations from history
+2025-09-22 17:29:24,920 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,922 - INFO - Loaded empty history file
+2025-09-22 17:29:24,923 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,923 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:24,923 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:24,925 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,930 - INFO - Loaded empty history file
+2025-09-22 17:29:24,930 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,930 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:24,930 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:24,936 - INFO - Empty history saved
+2025-09-22 17:29:24,939 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,943 - INFO - Loaded empty history file
+2025-09-22 17:29:24,944 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,944 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:24,944 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:24,945 - INFO - Set operation: Addition
+2025-09-22 17:29:24,945 - INFO - Calculation performed: Addition (2, 3) = 5
+2025-09-22 17:29:24,950 - INFO - History saved successfully to /home/ppatel/projects/assignment5/test_history/test_history.csv
+2025-09-22 17:29:24,957 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,957 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,959 - ERROR - Failed to load history: CSV read error
+2025-09-22 17:29:24,965 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,965 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,965 - INFO - Set operation: Addition
+2025-09-22 17:29:24,967 - ERROR - Failed to save history: CSV write error
+2025-09-22 17:29:24,970 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,970 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,970 - INFO - Set operation: Addition
+2025-09-22 17:29:24,974 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,974 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,974 - INFO - Set operation: Addition
+2025-09-22 17:29:24,980 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,980 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,980 - INFO - Set operation: Addition
+2025-09-22 17:29:24,980 - ERROR - Validation error: Invalid number
+2025-09-22 17:29:24,984 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,985 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,985 - INFO - Set operation: Addition
+2025-09-22 17:29:24,986 - ERROR - Operation failed: Unexpected error
+2025-09-22 17:29:24,988 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,989 - WARNING - Could not load existing history: Load failed
+2025-09-22 17:29:24,989 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,991 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,992 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:24,992 - INFO - Set operation: Addition
+2025-09-22 17:29:24,998 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:24,999 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,002 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,003 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,006 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,006 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,011 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,012 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,013 - INFO - Set operation: Addition
+2025-09-22 17:29:25,017 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,018 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,018 - INFO - Loaded empty history file
+2025-09-22 17:29:25,020 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,021 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,022 - INFO - No history file found - starting with empty history
+2025-09-22 17:29:25,025 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,025 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,030 - INFO - Empty history saved
+2025-09-22 17:29:25,033 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,034 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,034 - INFO - Added observer: Mock
+2025-09-22 17:29:25,034 - INFO - Set operation: Addition
+2025-09-22 17:29:25,037 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,037 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,040 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,045 - INFO - Loaded empty history file
+2025-09-22 17:29:25,046 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,067 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,069 - INFO - Loaded empty history file
+2025-09-22 17:29:25,070 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,070 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,070 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,073 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,080 - INFO - Loaded empty history file
+2025-09-22 17:29:25,080 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,080 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,080 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,087 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,089 - INFO - Loaded empty history file
+2025-09-22 17:29:25,089 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,089 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,089 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,092 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,098 - INFO - Loaded empty history file
+2025-09-22 17:29:25,098 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,098 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,099 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,103 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,106 - INFO - Loaded empty history file
+2025-09-22 17:29:25,106 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,106 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,106 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,111 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,114 - INFO - Loaded empty history file
+2025-09-22 17:29:25,114 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,114 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,114 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,121 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,125 - INFO - Loaded empty history file
+2025-09-22 17:29:25,125 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,125 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,125 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,131 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,135 - INFO - Loaded empty history file
+2025-09-22 17:29:25,135 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,135 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,136 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,139 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,141 - INFO - Loaded empty history file
+2025-09-22 17:29:25,141 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,141 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,141 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,146 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,149 - INFO - Loaded empty history file
+2025-09-22 17:29:25,150 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,150 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,150 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,154 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,157 - INFO - Loaded empty history file
+2025-09-22 17:29:25,157 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,157 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,157 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,162 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,166 - INFO - Loaded empty history file
+2025-09-22 17:29:25,167 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,167 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,167 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,170 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,170 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,170 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,170 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,173 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,173 - WARNING - Could not load existing history: Load failed
+2025-09-22 17:29:25,173 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,173 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,173 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,177 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,182 - INFO - Loaded empty history file
+2025-09-22 17:29:25,182 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,182 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,182 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,183 - INFO - Set operation: Addition
+2025-09-22 17:29:25,185 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,187 - INFO - Loaded empty history file
+2025-09-22 17:29:25,187 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,187 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,188 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,190 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,195 - INFO - Loaded empty history file
+2025-09-22 17:29:25,195 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,195 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,195 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,199 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,201 - INFO - Loaded empty history file
+2025-09-22 17:29:25,201 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,201 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,201 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,202 - INFO - Set operation: Addition
+2025-09-22 17:29:25,205 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,207 - INFO - Loaded empty history file
+2025-09-22 17:29:25,207 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,207 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,207 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,207 - INFO - Set operation: Addition
+2025-09-22 17:29:25,215 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,219 - INFO - Loaded empty history file
+2025-09-22 17:29:25,219 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,219 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,219 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,219 - INFO - Set operation: Addition
+2025-09-22 17:29:25,222 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,224 - INFO - Loaded empty history file
+2025-09-22 17:29:25,225 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,225 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,225 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,233 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,237 - INFO - Loaded empty history file
+2025-09-22 17:29:25,237 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,237 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,237 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,243 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,247 - INFO - Loaded empty history file
+2025-09-22 17:29:25,247 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,247 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,247 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,286 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,288 - INFO - Loaded empty history file
+2025-09-22 17:29:25,288 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,288 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,288 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,295 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,298 - INFO - Loaded empty history file
+2025-09-22 17:29:25,298 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,298 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,298 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,298 - INFO - Set operation: Addition
+2025-09-22 17:29:25,299 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,301 - INFO - Loaded empty history file
+2025-09-22 17:29:25,301 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,301 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,301 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,302 - INFO - Set operation: Subtraction
+2025-09-22 17:29:25,303 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,305 - INFO - Loaded empty history file
+2025-09-22 17:29:25,305 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,305 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,305 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,306 - INFO - Set operation: Multiplication
+2025-09-22 17:29:25,307 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,312 - INFO - Loaded empty history file
+2025-09-22 17:29:25,312 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,312 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,312 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,312 - INFO - Set operation: Division
+2025-09-22 17:29:25,314 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,316 - INFO - Loaded empty history file
+2025-09-22 17:29:25,316 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,316 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,316 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,317 - INFO - Set operation: Power
+2025-09-22 17:29:25,318 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,320 - INFO - Loaded empty history file
+2025-09-22 17:29:25,320 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,320 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,320 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,321 - INFO - Set operation: Root
+2025-09-22 17:29:25,323 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-22 17:29:25,325 - INFO - Loaded empty history file
+2025-09-22 17:29:25,325 - INFO - Calculator initialized with configuration
+2025-09-22 17:29:25,325 - INFO - Added observer: LoggingObserver
+2025-09-22 17:29:25,325 - INFO - Added observer: AutoSaveObserver
+2025-09-22 17:29:25,325 - INFO - Set operation: Addition
+2025-09-22 17:29:25,370 - INFO - History auto-saved
+2025-09-23 17:50:43,466 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,467 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,473 - INFO - Loaded 1 calculations from history
+2025-09-23 17:50:43,484 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,490 - INFO - Loaded empty history file
+2025-09-23 17:50:43,490 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,490 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,490 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,495 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,498 - INFO - Loaded empty history file
+2025-09-23 17:50:43,498 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,498 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,498 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,505 - INFO - Empty history saved
+2025-09-23 17:50:43,508 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,512 - INFO - Loaded empty history file
+2025-09-23 17:50:43,512 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,512 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,512 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,513 - INFO - Set operation: Addition
+2025-09-23 17:50:43,513 - INFO - Calculation performed: Addition (2, 3) = 5
+2025-09-23 17:50:43,516 - INFO - History saved successfully to /home/ppatel/projects/assignment5/test_history/test_history.csv
+2025-09-23 17:50:43,526 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,526 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,528 - ERROR - Failed to load history: CSV read error
+2025-09-23 17:50:43,533 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,534 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,534 - INFO - Set operation: Addition
+2025-09-23 17:50:43,536 - ERROR - Failed to save history: CSV write error
+2025-09-23 17:50:43,541 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,542 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,542 - INFO - Set operation: Addition
+2025-09-23 17:50:43,548 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,548 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,549 - INFO - Set operation: Addition
+2025-09-23 17:50:43,554 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,555 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,555 - INFO - Set operation: Addition
+2025-09-23 17:50:43,555 - ERROR - Validation error: Invalid number
+2025-09-23 17:50:43,560 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,560 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,560 - INFO - Set operation: Addition
+2025-09-23 17:50:43,561 - ERROR - Operation failed: Unexpected error
+2025-09-23 17:50:43,563 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,564 - WARNING - Could not load existing history: Load failed
+2025-09-23 17:50:43,564 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,568 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,568 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,568 - INFO - Set operation: Addition
+2025-09-23 17:50:43,576 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,576 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,579 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,580 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,583 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,584 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,586 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,587 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,587 - INFO - Set operation: Addition
+2025-09-23 17:50:43,595 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,595 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,596 - INFO - Loaded empty history file
+2025-09-23 17:50:43,599 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,600 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,600 - INFO - No history file found - starting with empty history
+2025-09-23 17:50:43,603 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,603 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,606 - INFO - Empty history saved
+2025-09-23 17:50:43,611 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,611 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,611 - INFO - Added observer: Mock
+2025-09-23 17:50:43,611 - INFO - Set operation: Addition
+2025-09-23 17:50:43,613 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,614 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,618 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,620 - INFO - Loaded empty history file
+2025-09-23 17:50:43,620 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,640 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,645 - INFO - Loaded empty history file
+2025-09-23 17:50:43,645 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,645 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,645 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,650 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,654 - INFO - Loaded empty history file
+2025-09-23 17:50:43,654 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,654 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,654 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,660 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,664 - INFO - Loaded empty history file
+2025-09-23 17:50:43,664 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,664 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,664 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,668 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,672 - INFO - Loaded empty history file
+2025-09-23 17:50:43,672 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,672 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,672 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,681 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,687 - INFO - Loaded empty history file
+2025-09-23 17:50:43,688 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,688 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,688 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,694 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,700 - INFO - Loaded empty history file
+2025-09-23 17:50:43,701 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,702 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,702 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,706 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,713 - INFO - Loaded empty history file
+2025-09-23 17:50:43,714 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,714 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,714 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,719 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,724 - INFO - Loaded empty history file
+2025-09-23 17:50:43,724 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,724 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,724 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,728 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,731 - INFO - Loaded empty history file
+2025-09-23 17:50:43,731 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,731 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,731 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,737 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,739 - INFO - Loaded empty history file
+2025-09-23 17:50:43,740 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,740 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,740 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,743 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,746 - INFO - Loaded empty history file
+2025-09-23 17:50:43,746 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,746 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,746 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,751 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,754 - INFO - Loaded empty history file
+2025-09-23 17:50:43,754 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,754 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,754 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,759 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,760 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,760 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,760 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,764 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,764 - WARNING - Could not load existing history: Load failed
+2025-09-23 17:50:43,765 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,765 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,765 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,770 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,772 - INFO - Loaded empty history file
+2025-09-23 17:50:43,772 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,772 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,772 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,773 - INFO - Set operation: Addition
+2025-09-23 17:50:43,778 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,782 - INFO - Loaded empty history file
+2025-09-23 17:50:43,782 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,782 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,782 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,786 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,790 - INFO - Loaded empty history file
+2025-09-23 17:50:43,791 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,791 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,791 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,797 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,800 - INFO - Loaded empty history file
+2025-09-23 17:50:43,801 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,801 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,801 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,801 - INFO - Set operation: Addition
+2025-09-23 17:50:43,807 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,813 - INFO - Loaded empty history file
+2025-09-23 17:50:43,813 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,813 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,814 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,814 - INFO - Set operation: Addition
+2025-09-23 17:50:43,821 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,824 - INFO - Loaded empty history file
+2025-09-23 17:50:43,824 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,824 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,824 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,825 - INFO - Set operation: Addition
+2025-09-23 17:50:43,831 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,836 - INFO - Loaded empty history file
+2025-09-23 17:50:43,836 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,836 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,836 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,843 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,847 - INFO - Loaded empty history file
+2025-09-23 17:50:43,847 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,847 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,848 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,852 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,856 - INFO - Loaded empty history file
+2025-09-23 17:50:43,856 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,856 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,856 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,897 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,900 - INFO - Loaded empty history file
+2025-09-23 17:50:43,900 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,900 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,900 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,906 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,909 - INFO - Loaded empty history file
+2025-09-23 17:50:43,909 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,909 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,909 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,909 - INFO - Set operation: Addition
+2025-09-23 17:50:43,911 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,913 - INFO - Loaded empty history file
+2025-09-23 17:50:43,914 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,914 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,914 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,914 - INFO - Set operation: Subtraction
+2025-09-23 17:50:43,916 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,918 - INFO - Loaded empty history file
+2025-09-23 17:50:43,918 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,918 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,918 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,918 - INFO - Set operation: Multiplication
+2025-09-23 17:50:43,920 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,923 - INFO - Loaded empty history file
+2025-09-23 17:50:43,923 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,923 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,923 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,923 - INFO - Set operation: Division
+2025-09-23 17:50:43,926 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,928 - INFO - Loaded empty history file
+2025-09-23 17:50:43,929 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,929 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,929 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,929 - INFO - Set operation: Power
+2025-09-23 17:50:43,930 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,934 - INFO - Loaded empty history file
+2025-09-23 17:50:43,934 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,934 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,934 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,934 - INFO - Set operation: Root
+2025-09-23 17:50:43,937 - INFO - Logging initialized at: /home/ppatel/projects/assignment5/test_logs/test_log.log
+2025-09-23 17:50:43,941 - INFO - Loaded empty history file
+2025-09-23 17:50:43,941 - INFO - Calculator initialized with configuration
+2025-09-23 17:50:43,941 - INFO - Added observer: LoggingObserver
+2025-09-23 17:50:43,941 - INFO - Added observer: AutoSaveObserver
+2025-09-23 17:50:43,942 - INFO - Set operation: Addition
+2025-09-23 17:50:44,010 - INFO - History auto-saved
+2025-09-26 11:14:23,492 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,494 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,497 - INFO - Loaded 1 calculations from history
+2025-09-26 11:14:23,507 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,512 - INFO - Loaded empty history file
+2025-09-26 11:14:23,512 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,512 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,512 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,516 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,518 - INFO - Loaded empty history file
+2025-09-26 11:14:23,518 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,518 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,518 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,524 - INFO - Empty history saved
+2025-09-26 11:14:23,527 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,530 - INFO - Loaded empty history file
+2025-09-26 11:14:23,530 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,531 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,531 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,531 - INFO - Set operation: Addition
+2025-09-26 11:14:23,531 - INFO - Calculation performed: Addition (2, 3) = 5
+2025-09-26 11:14:23,533 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv
+2025-09-26 11:14:23,547 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,548 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,550 - ERROR - Failed to load history: CSV read error
+2025-09-26 11:14:23,554 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,554 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,554 - INFO - Set operation: Addition
+2025-09-26 11:14:23,556 - ERROR - Failed to save history: CSV write error
+2025-09-26 11:14:23,562 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,563 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,563 - INFO - Set operation: Addition
+2025-09-26 11:14:23,569 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,569 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,569 - INFO - Set operation: Addition
+2025-09-26 11:14:23,572 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,572 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,572 - INFO - Set operation: Addition
+2025-09-26 11:14:23,572 - ERROR - Validation error: Invalid number
+2025-09-26 11:14:23,575 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,576 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,576 - INFO - Set operation: Addition
+2025-09-26 11:14:23,577 - ERROR - Operation failed: Unexpected error
+2025-09-26 11:14:23,584 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,584 - WARNING - Could not load existing history: Load failed
+2025-09-26 11:14:23,584 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,587 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,587 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,587 - INFO - Set operation: Addition
+2025-09-26 11:14:23,590 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,590 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,595 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,595 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,601 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,602 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,605 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,605 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,606 - INFO - Set operation: Addition
+2025-09-26 11:14:23,609 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,609 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,610 - INFO - Loaded empty history file
+2025-09-26 11:14:23,614 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,615 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,615 - INFO - No history file found - starting with empty history
+2025-09-26 11:14:23,618 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,620 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,622 - INFO - Empty history saved
+2025-09-26 11:14:23,625 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,625 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,626 - INFO - Added observer: Mock
+2025-09-26 11:14:23,626 - INFO - Set operation: Addition
+2025-09-26 11:14:23,628 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,628 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,632 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,634 - INFO - Loaded empty history file
+2025-09-26 11:14:23,634 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,658 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,662 - INFO - Loaded empty history file
+2025-09-26 11:14:23,662 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,662 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,662 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,667 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,670 - INFO - Loaded empty history file
+2025-09-26 11:14:23,670 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,670 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,670 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,675 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,677 - INFO - Loaded empty history file
+2025-09-26 11:14:23,677 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,677 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,678 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,681 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,682 - INFO - Loaded empty history file
+2025-09-26 11:14:23,683 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,683 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,683 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,689 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,694 - INFO - Loaded empty history file
+2025-09-26 11:14:23,694 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,695 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,695 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,698 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,700 - INFO - Loaded empty history file
+2025-09-26 11:14:23,700 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,700 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,700 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,706 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,710 - INFO - Loaded empty history file
+2025-09-26 11:14:23,710 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,710 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,710 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,713 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,716 - INFO - Loaded empty history file
+2025-09-26 11:14:23,716 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,716 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,716 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,720 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,725 - INFO - Loaded empty history file
+2025-09-26 11:14:23,725 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,725 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,725 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,730 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,733 - INFO - Loaded empty history file
+2025-09-26 11:14:23,733 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,734 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,734 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,737 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,741 - INFO - Loaded empty history file
+2025-09-26 11:14:23,741 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,741 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,741 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,746 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,749 - INFO - Loaded empty history file
+2025-09-26 11:14:23,749 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,749 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,749 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,752 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,752 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,753 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,753 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,756 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,756 - WARNING - Could not load existing history: Load failed
+2025-09-26 11:14:23,757 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,757 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,757 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,761 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,765 - INFO - Loaded empty history file
+2025-09-26 11:14:23,766 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,766 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,766 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,766 - INFO - Set operation: Addition
+2025-09-26 11:14:23,769 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,771 - INFO - Loaded empty history file
+2025-09-26 11:14:23,772 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,772 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,772 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,776 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,780 - INFO - Loaded empty history file
+2025-09-26 11:14:23,780 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,780 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,780 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,786 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,789 - INFO - Loaded empty history file
+2025-09-26 11:14:23,789 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,789 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,789 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,789 - INFO - Set operation: Addition
+2025-09-26 11:14:23,794 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,796 - INFO - Loaded empty history file
+2025-09-26 11:14:23,796 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,796 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,796 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,797 - INFO - Set operation: Addition
+2025-09-26 11:14:23,801 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,804 - INFO - Loaded empty history file
+2025-09-26 11:14:23,804 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,804 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,804 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,804 - INFO - Set operation: Addition
+2025-09-26 11:14:23,807 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,810 - INFO - Loaded empty history file
+2025-09-26 11:14:23,810 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,810 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,810 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,815 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,819 - INFO - Loaded empty history file
+2025-09-26 11:14:23,819 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,819 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,820 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,822 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,825 - INFO - Loaded empty history file
+2025-09-26 11:14:23,825 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,825 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,825 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,828 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,832 - INFO - Loaded empty history file
+2025-09-26 11:14:23,832 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,832 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,832 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,841 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,844 - INFO - Loaded empty history file
+2025-09-26 11:14:23,844 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,844 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,844 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,845 - INFO - Set operation: Addition
+2025-09-26 11:14:23,847 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,850 - INFO - Loaded empty history file
+2025-09-26 11:14:23,850 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,850 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,850 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,851 - INFO - Set operation: Subtraction
+2025-09-26 11:14:23,854 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,857 - INFO - Loaded empty history file
+2025-09-26 11:14:23,857 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,857 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,857 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,857 - INFO - Set operation: Multiplication
+2025-09-26 11:14:23,859 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,861 - INFO - Loaded empty history file
+2025-09-26 11:14:23,861 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,861 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,861 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,861 - INFO - Set operation: Division
+2025-09-26 11:14:23,862 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,865 - INFO - Loaded empty history file
+2025-09-26 11:14:23,865 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,865 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,865 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,866 - INFO - Set operation: Power
+2025-09-26 11:14:23,868 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,871 - INFO - Loaded empty history file
+2025-09-26 11:14:23,871 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,871 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,871 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,871 - INFO - Set operation: Root
+2025-09-26 11:14:23,874 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log
+2025-09-26 11:14:23,876 - INFO - Loaded empty history file
+2025-09-26 11:14:23,876 - INFO - Calculator initialized with configuration
+2025-09-26 11:14:23,876 - INFO - Added observer: LoggingObserver
+2025-09-26 11:14:23,876 - INFO - Added observer: AutoSaveObserver
+2025-09-26 11:14:23,876 - INFO - Set operation: Addition
+2025-09-26 11:14:23,924 - INFO - History auto-saved
