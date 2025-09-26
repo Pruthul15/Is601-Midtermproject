@@ -40,6 +40,36 @@ class Calculation:
         """
         self.result = self.calculate()
 
+    def _calculate_modulus(self, x: Decimal, y: Decimal) -> Decimal:
+        """
+        Calculate modulus using precision-preserving Decimal arithmetic.
+        
+        This method matches the logic from operations.py to ensure consistency
+        between live calculations and stored history.
+        
+        Args:
+            x (Decimal): Dividend
+            y (Decimal): Divisor
+            
+        Returns:
+            Decimal: Remainder with correct Python behavior and preserved precision
+        """
+        # Calculate using Decimal arithmetic to preserve precision
+        quotient = x / y
+        
+        # Get integer part of quotient (floor for negative numbers to match Python behavior)
+        if quotient < 0:
+            # For negative quotient, use floor behavior like Python's //
+            integer_part = int(quotient) - 1 if quotient != int(quotient) else int(quotient)
+        else:
+            # For positive quotient, normal truncation
+            integer_part = int(quotient)
+        
+        # Calculate remainder: x - (y * integer_part)
+        remainder = x - (y * Decimal(integer_part))
+        
+        return remainder
+
     def calculate(self) -> Decimal:
         """
         Execute calculation using the specified operation.
@@ -55,7 +85,7 @@ class Calculation:
             OperationError: If the operation is unknown or the calculation fails.
         """
         # Mapping of operation names to their corresponding functions
-        # UPDATED: Added new operations for midterm requirements
+        # UPDATED: Added new operations for midterm requirements with precision-preserving modulus
         operations = {
             # Basic operations
             "Addition": lambda x, y: x + y,
@@ -68,9 +98,13 @@ class Calculation:
                 if x >= 0 and y != 0 
                 else self._raise_invalid_root(x, y)
             ),
-            # New operations for midterm
-            "Modulus": lambda x, y: x % y if y != 0 else self._raise_mod_zero(),
-            "IntegerDivision": lambda x, y: x // y if y != 0 else self._raise_int_div_zero(),
+            # New operations for midterm - FIXED MODULUS TO PRESERVE PRECISION
+            "Modulus": lambda x, y: (
+                self._calculate_modulus(x, y) if y != 0 else self._raise_mod_zero()
+            ),
+            "IntegerDivision": lambda x, y: (
+                Decimal(str(int(float(x) // float(y)))) if y != 0 else self._raise_int_div_zero()
+            ),
             "Percentage": lambda x, y: (x / y) * Decimal('100') if y != 0 else self._raise_percent_zero(),
             "AbsoluteDifference": lambda x, y: abs(x - y)
         }
