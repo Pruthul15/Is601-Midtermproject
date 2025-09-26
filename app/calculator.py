@@ -259,7 +259,8 @@ class Calculator:
 
             if history_data:
                 # Create a pandas DataFrame from the history data
-                df = pd.DataFrame(history_data)
+                # FIXED: Added dtype=str to prevent pandas from converting strings to floats
+                df = pd.DataFrame(history_data, dtype=str)
                 # Write the DataFrame to a CSV file without the index
                 df.to_csv(self.config.history_file, index=False)
                 logging.info(f"History saved successfully to {self.config.history_file}")
@@ -287,7 +288,8 @@ class Calculator:
         try:
             if self.config.history_file.exists():
                 # Read the CSV file into a pandas DataFrame
-                df = pd.read_csv(self.config.history_file)
+                # FIXED: Added dtype=str to prevent pandas from converting strings to floats during read
+                df = pd.read_csv(self.config.history_file, dtype=str)
                 if not df.empty:
                     # Deserialize each row into a Calculation instance
                     self.history = [
