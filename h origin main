@@ -1,0 +1,2135 @@
+[33mcommit 1dd3d0e438c54a23d22a0b97daf5662b96c2a6bf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Pruthul15 <106988002+Pruthul15@users.noreply.github.com>
+Date:   Fri Sep 26 14:24:03 2025 -0400
+
+    Identify CSV data corruption issue in calculator history
+    
+    - Calculator displays corrupted floating-point data after save/load
+    - Clean input (10.5, 3.2) becomes (10.5, 3.20000000000000017763...)
+    - Root cause: pandas DataFrame converting Decimal strings to floats
+    - Issue affects both save_history() and load_history() methods
+
+[1mdiff --git a/app/calculation.py b/app/calculation.py[m
+[1mindex caf5fd8..6b8e3f3 100644[m
+[1m--- a/app/calculation.py[m
+[1m+++ b/app/calculation.py[m
+[36m@@ -40,6 +40,36 @@[m [mclass Calculation:[m
+         """[m
+         self.result = self.calculate()[m
+ [m
+[32m+[m[32m    def _calculate_modulus(self, x: Decimal, y: Decimal) -> Decimal:[m
+[32m+[m[32m        """[m
+[32m+[m[32m        Calculate modulus using precision-preserving Decimal arithmetic.[m
+[32m+[m[41m        [m
+[32m+[m[32m        This method matches the logic from operations.py to ensure consistency[m
+[32m+[m[32m        between live calculations and stored history.[m
+[32m+[m[41m        [m
+[32m+[m[32m        Args:[m
+[32m+[m[32m            x (Decimal): Dividend[m
+[32m+[m[32m            y (Decimal): Divisor[m
+[32m+[m[41m            [m
+[32m+[m[32m        Returns:[m
+[32m+[m[32m            Decimal: Remainder with correct Python behavior and preserved precision[m
+[32m+[m[32m        """[m
+[32m+[m[32m        # Calculate using Decimal arithmetic to preserve precision[m
+[32m+[m[32m        quotient = x / y[m
+[32m+[m[41m        [m
+[32m+[m[32m        # Get integer part of quotient (floor for negative numbers to match Python behavior)[m
+[32m+[m[32m        if quotient < 0:[m
+[32m+[m[32m            # For negative quotient, use floor behavior like Python's //[m
+[32m+[m[32m            integer_part = int(quotient) - 1 if quotient != int(quotient) else int(quotient)[m
+[32m+[m[32m        else:[m
+[32m+[m[32m            # For positive quotient, normal truncation[m
+[32m+[m[32m            integer_part = int(quotient)[m
+[32m+[m[41m        [m
+[32m+[m[32m        # Calculate remainder: x - (y * integer_part)[m
+[32m+[m[32m        remainder = x - (y * Decimal(integer_part))[m
+[32m+[m[41m        [m
+[32m+[m[32m        return remainder[m
+[32m+[m
+     def calculate(self) -> Decimal:[m
+         """[m
+         Execute calculation using the specified operation.[m
+[36m@@ -55,7 +85,7 @@[m [mclass Calculation:[m
+             OperationError: If the operation is unknown or the calculation fails.[m
+         """[m
+         # Mapping of operation names to their corresponding functions[m
+[31m-        # UPDATED: Added new operations for midterm requirements[m
+[32m+[m[32m        # UPDATED: Added new operations for midterm requirements with precision-preserving modulus[m
+         operations = {[m
+             # Basic operations[m
+             "Addition": lambda x, y: x + y,[m
+[36m@@ -68,9 +98,13 @@[m [mclass Calculation:[m
+                 if x >= 0 and y != 0 [m
+                 else self._raise_invalid_root(x, y)[m
+             ),[m
+[31m-            # New operations for midterm[m
+[31m-            "Modulus": lambda x, y: x % y if y != 0 else self._raise_mod_zero(),[m
+[31m-            "IntegerDivision": lambda x, y: x // y if y != 0 else self._raise_int_div_zero(),[m
+[32m+[m[32m            # New operations for midterm - FIXED MODULUS TO PRESERVE PRECISION[m
+[32m+[m[32m            "Modulus": lambda x, y: ([m
+[32m+[m[32m                self._calculate_modulus(x, y) if y != 0 else self._raise_mod_zero()[m
+[32m+[m[32m            ),[m
+[32m+[m[32m            "IntegerDivision": lambda x, y: ([m
+[32m+[m[32m                Decimal(str(int(float(x) // float(y)))) if y != 0 else self._raise_int_div_zero()[m
+[32m+[m[32m            ),[m
+             "Percentage": lambda x, y: (x / y) * Decimal('100') if y != 0 else self._raise_percent_zero(),[m
+             "AbsoluteDifference": lambda x, y: abs(x - y)[m
+         }[m
+[1mdiff --git a/app/calculator.py b/app/calculator.py[m
+[1mindex 9e1f568..451d103 100644[m
+[1m--- a/app/calculator.py[m
+[1m+++ b/app/calculator.py[m
+[36m@@ -259,7 +259,8 @@[m [mclass Calculator:[m
+ [m
+             if history_data:[m
+                 # Create a pandas DataFrame from the history data[m
+[31m-                df = pd.DataFrame(history_data)[m
+[32m+[m[32m                # FIXED: Added dtype=str to prevent pandas from converting strings to floats[m
+[32m+[m[32m                df = pd.DataFrame(history_data, dtype=str)[m
+                 # Write the DataFrame to a CSV file without the index[m
+                 df.to_csv(self.config.history_file, index=False)[m
+                 logging.info(f"History saved successfully to {self.config.history_file}")[m
+[36m@@ -287,7 +288,8 @@[m [mclass Calculator:[m
+         try:[m
+             if self.config.history_file.exists():[m
+                 # Read the CSV file into a pandas DataFrame[m
+[31m-                df = pd.read_csv(self.config.history_file)[m
+[32m+[m[32m                # FIXED: Added dtype=str to prevent pandas from converting strings to floats during read[m
+[32m+[m[32m                df = pd.read_csv(self.config.history_file, dtype=str)[m
+                 if not df.empty:[m
+                     # Deserialize each row into a Calculation instance[m
+                     self.history = [[m
+[36m@@ -394,4 +396,4 @@[m [mclass Calculator:[m
+         self.undo_stack.append(CalculatorMemento(self.history.copy()))[m
+         # Restore the history from the memento[m
+         self.history = memento.history.copy()[m
+[31m-        return True[m
+[32m+[m[32m        return True[m
+\ No newline at end of file[m
+[1mdiff --git a/app/calculator_repl.py b/app/calculator_repl.py[m
+[1mindex 06846a3..7463cf8 100644[m
+[1m--- a/app/calculator_repl.py[m
+[1m+++ b/app/calculator_repl.py[m
+[36m@@ -37,25 +37,19 @@[m [mdef calculator_repl():[m
+                 if command == 'help':[m
+                     # Display available commands - UPDATED with new operations[m
+                     print("\nAvailable commands:")[m
+[31m-                    print("  Basic Operations:")[m
+[31m-                    print("    add, subtract, multiply, divide - Basic arithmetic")[m
+[31m-                    print("    power, root - Advanced arithmetic")[m
+[31m-                    print("  New Operations:")[m
+[31m-                    print("    modulus - Remainder of division (a % b)")[m
+[31m-                    print("    int_divide - Integer division (a // b)")[m
+[31m-                    print("    percent - Percentage calculation ((a / b) * 100)")[m
+[31m-                    print("    abs_diff - Absolute difference |a - b|")[m
+[31m-                    print("  History Commands:")[m
+[31m-                    print("    history - Show calculation history")[m
+[31m-                    print("    clear - Clear calculation history")[m
+[31m-                    print("    undo - Undo the last calculation")[m
+[31m-                    print("    redo - Redo the last undone calculation")[m
+[31m-                    print("  File Operations:")[m
+[31m-                    print("    save - Save calculation history to file")[m
+[31m-                    print("    load - Load calculation history from file")[m
+[31m-                    print("  Other:")[m
+[31m-                    print("    help - Display this help message")[m
+[31m-                    print("    exit - Exit the calculator")[m
+[32m+[m[32m                    print("  add, subtract, multiply, divide, power, root - Perform calculations")[m
+[32m+[m[32m                    print("  modulus - Remainder of division (a % b)")[m
+[32m+[m[32m                    print("  int_divide - Integer division (a // b)")[m
+[32m+[m[32m                    print("  percent - Percentage calculation ((a / b) * 100)")[m
+[32m+[m[32m                    print("  abs_diff - Absolute difference |a - b|")[m
+[32m+[m[32m                    print("  history - Show calculation history")[m
+[32m+[m[32m                    print("  clear - Clear calculation history")[m
+[32m+[m[32m                    print("  undo - Undo the last calculation")[m
+[32m+[m[32m                    print("  redo - Redo the last undone calculation")[m
+[32m+[m[32m                    print("  save - Save calculation history to file")[m
+[32m+[m[32m                    print("  load - Load calculation history from file")[m
+[32m+[m[32m                    print("  help - Display this help message")[m
+[32m+[m[32m                    print("  exit - Exit the calculator")[m
+                     continue[m
+ [m
+                 if command == 'exit':[m
+[1mdiff --git a/app/operations.py b/app/operations.py[m
+[1mindex 8242bac..2a5a407 100644[m
+[1m--- a/app/operations.py[m
+[1m+++ b/app/operations.py[m
+[36m@@ -289,7 +289,22 @@[m [mclass Modulus(Operation):[m
+             Decimal: Remainder of the division.[m
+         """[m
+         self.validate_operands(a, b)[m
+[31m-        return a % b[m
+[32m+[m[41m        [m
+[32m+[m[32m        # Calculate using Decimal arithmetic to preserve precision[m
+[32m+[m[32m        quotient = a / b[m
+[32m+[m[41m        [m
+[32m+[m[32m        # Get integer part of quotient (floor for negative numbers to match Python behavior)[m
+[32m+[m[32m        if quotient < 0:[m
+[32m+[m[32m            # For negative quotient, use floor behavior like Python's //[m
+[32m+[m[32m            integer_part = int(quotient) - 1 if quotient != int(quotient) else int(quotient)[m
+[32m+[m[32m        else:[m
+[32m+[m[32m            # For positive quotient, normal truncation[m
+[32m+[m[32m            integer_part = int(quotient)[m
+[32m+[m[41m        [m
+[32m+[m[32m        # Calculate remainder: a - (b * integer_part)[m
+[32m+[m[32m        remainder = a - (b * Decimal(integer_part))[m
+[32m+[m[41m        [m
+[32m+[m[32m        return remainder[m
+ [m
+ [m
+ class IntegerDivision(Operation):[m
+[36m@@ -328,7 +343,9 @@[m [mclass IntegerDivision(Operation):[m
+             Decimal: Integer quotient of the division.[m
+         """[m
+         self.validate_operands(a, b)[m
+[31m-        return a // b[m
+[32m+[m[32m        # Use Python's floor division behavior for consistent results with tests[m
+[32m+[m[32m        result = float(a) // float(b)[m
+[32m+[m[32m        return Decimal(str(int(result)))[m
+ [m
+ [m
+ class Percentage(Operation):[m
+[1mdiff --git a/test_logs/test_log.log b/test_logs/test_log.log[m
+[1mindex 8684341..389bccc 100644[m
+[1m--- a/test_logs/test_log.log[m
+[1m+++ b/test_logs/test_log.log[m
+[36m@@ -1476,3 +1476,1939 @@[m
+ 2025-09-26 11:14:23,876 - INFO - Added observer: AutoSaveObserver[m
+ 2025-09-26 11:14:23,876 - INFO - Set operation: Addition[m
+ 2025-09-26 11:14:23,924 - INFO - History auto-saved[m
+[32m+[m[32m2025-09-26 11:25:28,857 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,858 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,862 - INFO - Loaded 1 calculations from history[m
+[32m+[m[32m2025-09-26 11:25:28,872 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,875 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:28,875 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,875 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:28,875 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:28,879 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,884 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:28,884 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,884 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:28,884 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:28,889 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 11:25:28,891 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,893 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:28,893 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,893 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:28,893 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:28,894 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:28,894 - INFO - Calculation performed: Addition (2, 3) = 5[m
+[32m+[m[32m2025-09-26 11:25:28,896 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv[m
+[32m+[m[32m2025-09-26 11:25:28,910 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,910 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,912 - ERROR - Failed to load history: CSV read error[m
+[32m+[m[32m2025-09-26 11:25:28,917 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,917 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,917 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:28,919 - ERROR - Failed to save history: CSV write error[m
+[32m+[m[32m2025-09-26 11:25:28,924 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,925 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,925 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:28,930 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,930 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,930 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:28,935 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,936 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,936 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:28,937 - ERROR - Validation error: Invalid number[m
+[32m+[m[32m2025-09-26 11:25:28,942 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,942 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,942 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:28,943 - ERROR - Operation failed: Unexpected error[m
+[32m+[m[32m2025-09-26 11:25:28,946 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,947 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 11:25:28,947 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,949 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,950 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,950 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:28,958 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,958 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,962 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,962 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,965 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,966 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,972 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,972 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,973 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:28,978 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,978 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,978 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:28,982 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,983 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,983 - INFO - No history file found - starting with empty history[m
+[32m+[m[32m2025-09-26 11:25:28,990 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,991 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,994 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 11:25:28,998 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:28,999 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:28,999 - INFO - Added observer: Mock[m
+[32m+[m[32m2025-09-26 11:25:28,999 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:29,002 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,002 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,008 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,012 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,013 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,033 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,037 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,037 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,037 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,037 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,044 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,048 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,048 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,048 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,048 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,052 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,054 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,054 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,054 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,054 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,058 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,062 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,062 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,062 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,062 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,066 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,068 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,068 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,068 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,069 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,073 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,078 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,078 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,078 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,078 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,083 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,085 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,085 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,085 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,085 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,088 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,094 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,094 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,094 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,094 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,099 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,102 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,102 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,103 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,103 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,106 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,109 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,109 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,109 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,109 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,115 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,119 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,119 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,119 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,119 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,122 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,124 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,124 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,124 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,124 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,127 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,127 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,127 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,127 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,135 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,135 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 11:25:29,135 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,135 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,135 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,138 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,141 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,141 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,141 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,141 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,141 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:29,144 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,148 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,148 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,148 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,149 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,155 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,157 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,157 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,157 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,158 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,161 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,164 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,164 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,164 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,164 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,165 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:29,170 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,173 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,173 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,173 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,173 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,174 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:29,177 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,179 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,179 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,179 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,179 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,180 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:29,184 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,189 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,189 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,189 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,190 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,193 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,195 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,196 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,196 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,196 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,201 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,204 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,205 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,205 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,205 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,238 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,240 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,240 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,240 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,240 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,245 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,247 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,247 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,247 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,247 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,247 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:29,249 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,251 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,251 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,251 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,252 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,252 - INFO - Set operation: Subtraction[m
+[32m+[m[32m2025-09-26 11:25:29,256 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,259 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,259 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,259 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,259 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,260 - INFO - Set operation: Multiplication[m
+[32m+[m[32m2025-09-26 11:25:29,261 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,263 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,263 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,263 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,263 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,264 - INFO - Set operation: Division[m
+[32m+[m[32m2025-09-26 11:25:29,265 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,267 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,267 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,267 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,267 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,268 - INFO - Set operation: Power[m
+[32m+[m[32m2025-09-26 11:25:29,269 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,272 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,272 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,272 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,272 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,272 - INFO - Set operation: Root[m
+[32m+[m[32m2025-09-26 11:25:29,275 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 11:25:29,277 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 11:25:29,277 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 11:25:29,277 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 11:25:29,277 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 11:25:29,278 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 11:25:29,320 - INFO - History auto-saved[m
+[32m+[m[32m2025-09-26 12:18:53,753 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:53,754 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:53,762 - INFO - Loaded 1 calculations from history[m
+[32m+[m[32m2025-09-26 12:18:53,781 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:53,787 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:53,787 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:53,787 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:53,787 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:53,794 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:53,797 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:53,798 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:53,798 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:53,798 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:53,831 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 12:18:53,846 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:53,854 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:53,859 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:53,860 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:53,861 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:53,863 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:53,864 - INFO - Calculation performed: Addition (2, 3) = 5[m
+[32m+[m[32m2025-09-26 12:18:53,872 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv[m
+[32m+[m[32m2025-09-26 12:18:53,931 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:53,933 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:53,936 - ERROR - Failed to load history: CSV read error[m
+[32m+[m[32m2025-09-26 12:18:53,944 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:53,952 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:53,952 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:53,958 - ERROR - Failed to save history: CSV write error[m
+[32m+[m[32m2025-09-26 12:18:53,969 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:53,970 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:53,970 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:53,981 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:53,982 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:53,982 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:53,990 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:53,991 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:53,991 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:53,992 - ERROR - Validation error: Invalid number[m
+[32m+[m[32m2025-09-26 12:18:54,000 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,001 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,001 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:54,005 - ERROR - Operation failed: Unexpected error[m
+[32m+[m[32m2025-09-26 12:18:54,011 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,012 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 12:18:54,012 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,024 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,025 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,025 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:54,032 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,032 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,043 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,044 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,050 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,051 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,061 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,062 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,062 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:54,070 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,071 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,072 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,078 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,080 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,080 - INFO - No history file found - starting with empty history[m
+[32m+[m[32m2025-09-26 12:18:54,089 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,090 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,096 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 12:18:54,101 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,102 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,102 - INFO - Added observer: Mock[m
+[32m+[m[32m2025-09-26 12:18:54,102 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:54,115 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,116 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,119 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,127 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,129 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,174 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,183 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,183 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,183 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,184 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,320 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,326 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,326 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,326 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,327 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,334 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,340 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,341 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,341 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,342 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,349 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,353 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,353 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,353 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,353 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,358 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,364 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,365 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,366 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,366 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,372 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,377 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,377 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,377 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,378 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,387 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,394 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,394 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,394 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,395 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,402 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,409 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,409 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,409 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,410 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,415 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,421 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,421 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,421 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,421 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,427 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,431 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,431 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,431 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,432 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,441 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,446 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,446 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,446 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,446 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,450 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,454 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,455 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,455 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,455 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,464 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,465 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,465 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,465 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,474 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,476 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 12:18:54,476 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,476 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,476 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,483 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,488 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,488 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,488 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,489 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,490 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:54,496 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,502 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,502 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,502 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,502 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,511 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,516 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,516 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,517 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,517 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,526 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,534 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,535 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,535 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,536 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,537 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:54,548 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,553 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,553 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,553 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,553 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,554 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:54,601 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,605 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,605 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,605 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,605 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,606 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:54,610 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,613 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,614 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,614 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,614 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,621 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,629 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,629 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,630 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,630 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,639 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,644 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,644 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,644 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,645 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,654 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,667 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,668 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,668 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,668 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,692 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,704 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,704 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,704 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,704 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,705 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:54,712 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,720 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,721 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,721 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,721 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,722 - INFO - Set operation: Subtraction[m
+[32m+[m[32m2025-09-26 12:18:54,727 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,732 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,733 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,733 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,733 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,734 - INFO - Set operation: Multiplication[m
+[32m+[m[32m2025-09-26 12:18:54,739 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,745 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,745 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,745 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,745 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,746 - INFO - Set operation: Division[m
+[32m+[m[32m2025-09-26 12:18:54,748 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,752 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,752 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,753 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,753 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,753 - INFO - Set operation: Power[m
+[32m+[m[32m2025-09-26 12:18:54,756 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,760 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,760 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,760 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,760 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,761 - INFO - Set operation: Root[m
+[32m+[m[32m2025-09-26 12:18:54,764 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:18:54,769 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:18:54,770 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:18:54,770 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:18:54,770 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:18:54,771 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:18:54,876 - INFO - History auto-saved[m
+[32m+[m[32m2025-09-26 12:33:48,128 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,129 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,135 - INFO - Loaded 1 calculations from history[m
+[32m+[m[32m2025-09-26 12:33:48,151 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,158 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,158 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,158 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,158 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,165 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,171 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,172 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,172 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,172 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,181 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 12:33:48,186 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,190 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,190 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,191 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,191 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,191 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,191 - INFO - Calculation performed: Addition (2, 3) = 5[m
+[32m+[m[32m2025-09-26 12:33:48,195 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv[m
+[32m+[m[32m2025-09-26 12:33:48,217 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,218 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,221 - ERROR - Failed to load history: CSV read error[m
+[32m+[m[32m2025-09-26 12:33:48,230 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,231 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,231 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,236 - ERROR - Failed to save history: CSV write error[m
+[32m+[m[32m2025-09-26 12:33:48,242 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,244 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,244 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,252 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,252 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,252 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,262 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,264 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,264 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,264 - ERROR - Validation error: Invalid number[m
+[32m+[m[32m2025-09-26 12:33:48,271 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,272 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,272 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,273 - ERROR - Operation failed: Unexpected error[m
+[32m+[m[32m2025-09-26 12:33:48,281 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,281 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 12:33:48,281 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,285 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,286 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,286 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,296 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,297 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,303 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,305 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,312 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,313 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,318 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,319 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,319 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,327 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,329 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,330 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,334 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,335 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,335 - INFO - No history file found - starting with empty history[m
+[32m+[m[32m2025-09-26 12:33:48,339 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,341 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,347 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 12:33:48,352 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,352 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,352 - INFO - Added observer: Mock[m
+[32m+[m[32m2025-09-26 12:33:48,352 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,356 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,357 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,362 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,367 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,367 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,407 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,414 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,414 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,414 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,414 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,422 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,426 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,427 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,427 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,427 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,433 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,437 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,438 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,438 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,438 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,445 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,450 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,451 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,451 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,451 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,458 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,463 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,463 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,463 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,463 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,469 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,478 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,478 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,478 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,478 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,485 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,490 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,490 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,490 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,491 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,500 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,507 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,508 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,508 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,508 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,513 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,515 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,516 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,516 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,516 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,525 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,531 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,532 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,532 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,532 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,539 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,550 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,550 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,550 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,550 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,567 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,581 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,582 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,582 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,582 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,597 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,599 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,599 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,600 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,607 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,608 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 12:33:48,609 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,609 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,610 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,624 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,635 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,635 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,635 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,636 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,637 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,645 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,655 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,656 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,656 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,656 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,668 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,684 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,684 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,684 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,685 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,701 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,710 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,710 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,710 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,711 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,717 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,729 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,752 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,753 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,754 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,754 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,755 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,767 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,776 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,776 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,776 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,776 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,777 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,782 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,790 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,791 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,791 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,791 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,805 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,824 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,824 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,825 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,825 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,888 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,893 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,893 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,893 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,893 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,897 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,901 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,902 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,902 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,902 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,926 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,933 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,933 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,933 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,933 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,934 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:48,944 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,950 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,950 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,950 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,950 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,951 - INFO - Set operation: Subtraction[m
+[32m+[m[32m2025-09-26 12:33:48,961 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,966 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,966 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,967 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,967 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,967 - INFO - Set operation: Multiplication[m
+[32m+[m[32m2025-09-26 12:33:48,970 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,975 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,975 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,975 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,975 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,975 - INFO - Set operation: Division[m
+[32m+[m[32m2025-09-26 12:33:48,977 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,980 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,980 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,980 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,981 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,981 - INFO - Set operation: Power[m
+[32m+[m[32m2025-09-26 12:33:48,983 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,986 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,986 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,986 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,986 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,986 - INFO - Set operation: Root[m
+[32m+[m[32m2025-09-26 12:33:48,991 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:33:48,993 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:33:48,993 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:33:48,993 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:33:48,993 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:33:48,993 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:33:49,103 - INFO - History auto-saved[m
+[32m+[m[32m2025-09-26 12:36:13,825 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,825 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,830 - INFO - Loaded 1 calculations from history[m
+[32m+[m[32m2025-09-26 12:36:13,846 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,850 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:13,850 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,851 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:13,851 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:13,860 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,865 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:13,865 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,865 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:13,865 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:13,870 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 12:36:13,877 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,882 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:13,882 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,883 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:13,883 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:13,884 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:13,884 - INFO - Calculation performed: Addition (2, 3) = 5[m
+[32m+[m[32m2025-09-26 12:36:13,887 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv[m
+[32m+[m[32m2025-09-26 12:36:13,908 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,913 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,916 - ERROR - Failed to load history: CSV read error[m
+[32m+[m[32m2025-09-26 12:36:13,921 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,922 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,922 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:13,927 - ERROR - Failed to save history: CSV write error[m
+[32m+[m[32m2025-09-26 12:36:13,936 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,937 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,937 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:13,947 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,949 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,949 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:13,955 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,956 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,956 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:13,957 - ERROR - Validation error: Invalid number[m
+[32m+[m[32m2025-09-26 12:36:13,967 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,969 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,969 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:13,970 - ERROR - Operation failed: Unexpected error[m
+[32m+[m[32m2025-09-26 12:36:13,976 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,976 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 12:36:13,976 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,984 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,985 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:13,985 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:13,993 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:13,994 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,005 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,006 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,012 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,013 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,024 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,026 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,026 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:14,040 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,041 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,042 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,050 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,052 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,053 - INFO - No history file found - starting with empty history[m
+[32m+[m[32m2025-09-26 12:36:14,063 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,064 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,072 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 12:36:14,080 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,081 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,082 - INFO - Added observer: Mock[m
+[32m+[m[32m2025-09-26 12:36:14,083 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:14,095 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,096 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,106 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,114 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,114 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,177 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,186 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,186 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,186 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,187 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,198 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,205 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,205 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,205 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,205 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,215 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,221 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,221 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,221 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,221 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,227 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,235 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,235 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,235 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,236 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,243 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,253 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,253 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,253 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,254 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,260 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,266 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,267 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,269 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,269 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,275 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,279 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,279 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,279 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,279 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,289 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,296 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,296 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,297 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,297 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,306 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,312 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,312 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,312 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,312 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,320 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,326 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,326 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,326 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,326 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,332 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,335 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,337 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,337 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,338 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,346 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,350 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,350 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,350 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,350 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,358 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,360 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,360 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,360 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,368 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,368 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 12:36:14,368 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,368 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,368 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,379 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,385 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,386 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,386 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,386 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,386 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:14,394 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,400 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,400 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,400 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,400 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,405 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,412 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,412 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,413 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,413 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,419 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,422 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,422 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,423 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,424 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,427 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:14,434 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,438 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,438 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,438 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,438 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,439 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:14,447 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,453 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,453 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,453 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,453 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,454 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:14,457 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,466 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,466 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,466 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,466 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,472 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,475 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,475 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,475 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,475 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,525 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,527 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,528 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,528 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,528 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,533 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,537 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,537 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,537 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,537 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,545 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,552 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,552 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,552 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,552 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,553 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:14,555 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,560 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,560 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,560 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,560 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,561 - INFO - Set operation: Subtraction[m
+[32m+[m[32m2025-09-26 12:36:14,563 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,566 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,567 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,567 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,567 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,568 - INFO - Set operation: Multiplication[m
+[32m+[m[32m2025-09-26 12:36:14,571 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,574 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,574 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,574 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,574 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,574 - INFO - Set operation: Division[m
+[32m+[m[32m2025-09-26 12:36:14,576 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,578 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,578 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,578 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,578 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,579 - INFO - Set operation: Power[m
+[32m+[m[32m2025-09-26 12:36:14,580 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,583 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,583 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,583 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,583 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,584 - INFO - Set operation: Root[m
+[32m+[m[32m2025-09-26 12:36:14,589 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 12:36:14,592 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 12:36:14,592 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 12:36:14,592 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 12:36:14,593 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 12:36:14,593 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 12:36:14,697 - INFO - History auto-saved[m
+[32m+[m[32m2025-09-26 13:09:12,907 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:12,908 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:12,909 - INFO - Loaded 1 calculations from history[m
+[32m+[m[32m2025-09-26 13:09:12,920 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:12,924 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:12,925 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:12,925 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:12,925 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:12,928 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:12,930 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:12,930 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:12,930 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:12,930 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:12,935 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 13:09:12,939 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:12,942 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:12,942 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:12,942 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:12,942 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:12,942 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:12,942 - INFO - Calculation performed: Addition (2, 3) = 5[m
+[32m+[m[32m2025-09-26 13:09:12,945 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv[m
+[32m+[m[32m2025-09-26 13:09:12,961 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:12,961 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:12,963 - ERROR - Failed to load history: CSV read error[m
+[32m+[m[32m2025-09-26 13:09:12,966 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:12,967 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:12,968 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:12,971 - ERROR - Failed to save history: CSV write error[m
+[32m+[m[32m2025-09-26 13:09:12,976 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:12,977 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:12,977 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:12,982 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:12,983 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:12,983 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:12,988 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:12,989 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:12,989 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:12,989 - ERROR - Validation error: Invalid number[m
+[32m+[m[32m2025-09-26 13:09:12,995 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:12,995 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:12,995 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:12,996 - ERROR - Operation failed: Unexpected error[m
+[32m+[m[32m2025-09-26 13:09:13,000 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,000 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 13:09:13,000 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,005 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,006 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,006 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:13,012 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,013 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,016 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,016 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,021 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,022 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,027 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,028 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,028 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:13,033 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,033 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,034 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,037 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,038 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,038 - INFO - No history file found - starting with empty history[m
+[32m+[m[32m2025-09-26 13:09:13,041 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,042 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,046 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 13:09:13,048 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,049 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,049 - INFO - Added observer: Mock[m
+[32m+[m[32m2025-09-26 13:09:13,049 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:13,051 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,051 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,053 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,057 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,057 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,081 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,084 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,084 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,084 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,084 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,088 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,091 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,091 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,092 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,092 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,095 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,099 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,100 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,100 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,100 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,104 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,106 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,106 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,106 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,106 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,112 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,116 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,116 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,116 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,116 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,120 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,122 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,122 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,122 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,122 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,128 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,133 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,133 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,133 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,133 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,136 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,138 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,138 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,138 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,138 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,141 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,145 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,145 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,145 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,145 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,151 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,153 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,154 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,154 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,154 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,158 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,161 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,161 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,162 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,162 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,166 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,169 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,169 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,170 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,170 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,173 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,174 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,174 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,174 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,177 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,177 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 13:09:13,177 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,177 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,177 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,183 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,187 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,187 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,187 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,187 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,188 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:13,191 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,193 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,193 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,193 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,193 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,198 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,203 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,203 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,203 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,203 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,207 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,209 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,209 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,209 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,209 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,209 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:13,214 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,217 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,217 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,217 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,217 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,218 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:13,224 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,226 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,226 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,226 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,226 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,226 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:13,229 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,234 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,234 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,234 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,234 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,242 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,245 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,245 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,245 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,245 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,291 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,293 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,293 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,293 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,293 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,296 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,297 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,297 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,297 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,297 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,307 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,311 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,311 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,311 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,311 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,312 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:13,313 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,316 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,316 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,316 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,316 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,317 - INFO - Set operation: Subtraction[m
+[32m+[m[32m2025-09-26 13:09:13,319 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,322 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,322 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,322 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,322 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,323 - INFO - Set operation: Multiplication[m
+[32m+[m[32m2025-09-26 13:09:13,325 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,327 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,327 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,327 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,327 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,327 - INFO - Set operation: Division[m
+[32m+[m[32m2025-09-26 13:09:13,329 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,330 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,331 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,331 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,331 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,331 - INFO - Set operation: Power[m
+[32m+[m[32m2025-09-26 13:09:13,332 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,334 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,334 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,334 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,334 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,334 - INFO - Set operation: Root[m
+[32m+[m[32m2025-09-26 13:09:13,341 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:09:13,344 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:09:13,344 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:09:13,344 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:09:13,345 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:09:13,345 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:09:13,395 - INFO - History auto-saved[m
+[32m+[m[32m2025-09-26 13:12:05,934 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:05,935 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:05,941 - INFO - Loaded 1 calculations from history[m
+[32m+[m[32m2025-09-26 13:12:05,959 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:05,963 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:05,963 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:05,963 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:05,964 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:05,969 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:05,972 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:05,972 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:05,972 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:05,972 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:05,978 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 13:12:05,983 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:05,989 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:05,989 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:05,989 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:05,989 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:05,990 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:05,990 - INFO - Calculation performed: Addition (2, 3) = 5[m
+[32m+[m[32m2025-09-26 13:12:05,993 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv[m
+[32m+[m[32m2025-09-26 13:12:06,005 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,005 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,007 - ERROR - Failed to load history: CSV read error[m
+[32m+[m[32m2025-09-26 13:12:06,012 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,012 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,013 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,015 - ERROR - Failed to save history: CSV write error[m
+[32m+[m[32m2025-09-26 13:12:06,020 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,021 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,021 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,027 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,028 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,028 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,036 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,037 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,037 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,037 - ERROR - Validation error: Invalid number[m
+[32m+[m[32m2025-09-26 13:12:06,041 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,042 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,042 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,042 - ERROR - Operation failed: Unexpected error[m
+[32m+[m[32m2025-09-26 13:12:06,047 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,047 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 13:12:06,047 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,051 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,051 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,051 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,057 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,058 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,062 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,063 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,068 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,068 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,072 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,073 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,073 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,077 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,078 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,078 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,082 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,082 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,083 - INFO - No history file found - starting with empty history[m
+[32m+[m[32m2025-09-26 13:12:06,088 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,088 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,092 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 13:12:06,095 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,096 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,096 - INFO - Added observer: Mock[m
+[32m+[m[32m2025-09-26 13:12:06,096 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,100 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,101 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,104 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,107 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,107 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,130 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,134 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,134 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,135 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,135 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,140 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,143 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,143 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,143 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,143 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,148 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,151 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,151 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,151 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,151 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,156 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,159 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,159 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,159 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,159 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,165 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,167 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,168 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,168 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,168 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,174 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,177 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,177 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,179 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,179 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,184 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,188 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,188 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,189 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,189 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,194 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,197 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,198 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,198 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,198 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,202 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,204 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,204 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,204 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,204 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,210 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,213 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,214 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,214 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,214 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,219 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,221 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,221 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,221 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,221 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,228 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,232 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,232 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,232 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,232 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,237 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,237 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,237 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,237 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,240 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,241 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 13:12:06,241 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,241 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,241 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,248 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,252 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,252 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,252 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,252 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,253 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,256 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,259 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,259 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,259 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,260 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,267 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,271 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,271 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,271 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,271 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,275 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,279 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,279 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,280 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,280 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,281 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,286 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,289 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,289 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,289 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,289 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,289 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,293 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,299 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,299 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,299 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,299 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,300 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,304 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,308 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,308 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,308 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,308 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,312 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,318 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,318 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,318 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,318 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,359 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,362 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,362 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,362 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,362 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,365 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,368 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,369 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,369 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,369 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,376 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,379 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,379 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,379 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,379 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,380 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,381 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,384 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,384 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,384 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,384 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,384 - INFO - Set operation: Subtraction[m
+[32m+[m[32m2025-09-26 13:12:06,386 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,389 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,389 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,389 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,390 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,390 - INFO - Set operation: Multiplication[m
+[32m+[m[32m2025-09-26 13:12:06,392 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,395 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,395 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,395 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,395 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,395 - INFO - Set operation: Division[m
+[32m+[m[32m2025-09-26 13:12:06,397 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,399 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,399 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,399 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,399 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,399 - INFO - Set operation: Power[m
+[32m+[m[32m2025-09-26 13:12:06,401 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,403 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,403 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,403 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,403 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,404 - INFO - Set operation: Root[m
+[32m+[m[32m2025-09-26 13:12:06,408 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 13:12:06,411 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 13:12:06,411 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 13:12:06,411 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 13:12:06,411 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 13:12:06,411 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 13:12:06,468 - INFO - History auto-saved[m
+[32m+[m[32m2025-09-26 14:14:13,372 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,372 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,378 - INFO - Loaded 1 calculations from history[m
+[32m+[m[32m2025-09-26 14:14:13,385 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,389 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,389 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,389 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,390 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,396 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,399 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,399 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,399 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,399 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,403 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 14:14:13,406 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,410 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,410 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,410 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,410 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,412 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,412 - INFO - Calculation performed: Addition (2, 3) = 5[m
+[32m+[m[32m2025-09-26 14:14:13,415 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv[m
+[32m+[m[32m2025-09-26 14:14:13,425 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,425 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,427 - ERROR - Failed to load history: CSV read error[m
+[32m+[m[32m2025-09-26 14:14:13,433 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,434 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,434 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,435 - ERROR - Failed to save history: CSV write error[m
+[32m+[m[32m2025-09-26 14:14:13,439 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,440 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,440 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,454 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,454 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,455 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,459 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,459 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,459 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,459 - ERROR - Validation error: Invalid number[m
+[32m+[m[32m2025-09-26 14:14:13,465 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,466 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,466 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,467 - ERROR - Operation failed: Unexpected error[m
+[32m+[m[32m2025-09-26 14:14:13,470 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,470 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 14:14:13,471 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,473 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,473 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,473 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,478 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,478 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,485 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,486 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,489 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,489 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,492 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,492 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,492 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,497 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,497 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,498 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,509 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,510 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,510 - INFO - No history file found - starting with empty history[m
+[32m+[m[32m2025-09-26 14:14:13,515 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,516 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,519 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 14:14:13,527 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,528 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,529 - INFO - Added observer: Mock[m
+[32m+[m[32m2025-09-26 14:14:13,529 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,535 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,536 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,541 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,545 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,546 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,590 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,596 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,596 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,596 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,596 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,602 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,608 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,609 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,609 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,609 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,616 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,619 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,620 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,620 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,620 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,626 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,633 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,633 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,633 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,633 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,637 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,640 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,640 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,640 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,640 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,647 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,650 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,650 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,650 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,650 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,654 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,657 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,658 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,658 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,658 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,664 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,667 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,668 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,668 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,668 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,672 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,674 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,674 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,674 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,675 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,679 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,683 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,683 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,683 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,683 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,687 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,689 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,689 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,689 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,689 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,693 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,696 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,696 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,696 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,696 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,702 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,702 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,702 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,702 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,711 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,712 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 14:14:13,712 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,712 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,713 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,717 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,724 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,724 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,724 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,724 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,725 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,728 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,731 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,731 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,731 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,731 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,738 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,741 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,741 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,742 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,742 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,746 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,749 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,749 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,749 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,749 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,750 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,759 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,762 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,762 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,762 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,762 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,762 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,766 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,769 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,769 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,770 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,770 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,771 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,776 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,779 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,779 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,779 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,779 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,782 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,784 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,784 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,784 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,784 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,829 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,831 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,831 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,831 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,831 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,833 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,835 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,835 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,835 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,835 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,843 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,845 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,845 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,845 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,845 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,846 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,848 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,851 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,851 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,851 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,851 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,852 - INFO - Set operation: Subtraction[m
+[32m+[m[32m2025-09-26 14:14:13,853 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,856 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,856 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,856 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,856 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,857 - INFO - Set operation: Multiplication[m
+[32m+[m[32m2025-09-26 14:14:13,859 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,864 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,864 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,864 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,864 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,865 - INFO - Set operation: Division[m
+[32m+[m[32m2025-09-26 14:14:13,867 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,869 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,869 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,869 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,869 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,869 - INFO - Set operation: Power[m
+[32m+[m[32m2025-09-26 14:14:13,871 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,873 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,874 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,874 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,874 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,874 - INFO - Set operation: Root[m
+[32m+[m[32m2025-09-26 14:14:13,878 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:14:13,882 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:14:13,882 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:14:13,882 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:14:13,882 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:14:13,882 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:14:13,944 - INFO - History auto-saved[m
+[32m+[m[32m2025-09-26 14:21:50,401 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,401 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,404 - INFO - Loaded 1 calculations from history[m
+[32m+[m[32m2025-09-26 14:21:50,413 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,418 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,418 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,418 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,418 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,423 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,425 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,425 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,425 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,425 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,431 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 14:21:50,435 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,439 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,439 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,439 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,439 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,440 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,440 - INFO - Calculation performed: Addition (2, 3) = 5[m
+[32m+[m[32m2025-09-26 14:21:50,443 - INFO - History saved successfully to /home/ppatel/projects/midterm/test_history/test_history.csv[m
+[32m+[m[32m2025-09-26 14:21:50,459 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,460 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,462 - ERROR - Failed to load history: CSV read error[m
+[32m+[m[32m2025-09-26 14:21:50,467 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,467 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,467 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,471 - ERROR - Failed to save history: CSV write error[m
+[32m+[m[32m2025-09-26 14:21:50,475 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,476 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,476 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,481 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,482 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,482 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,486 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,486 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,486 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,486 - ERROR - Validation error: Invalid number[m
+[32m+[m[32m2025-09-26 14:21:50,491 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,491 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,491 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,492 - ERROR - Operation failed: Unexpected error[m
+[32m+[m[32m2025-09-26 14:21:50,496 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,496 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 14:21:50,496 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,499 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,500 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,500 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,504 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,505 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,510 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,511 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,514 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,514 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,517 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,518 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,518 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,522 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,523 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,524 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,528 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,528 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,529 - INFO - No history file found - starting with empty history[m
+[32m+[m[32m2025-09-26 14:21:50,532 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,533 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,536 - INFO - Empty history saved[m
+[32m+[m[32m2025-09-26 14:21:50,539 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,540 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,540 - INFO - Added observer: Mock[m
+[32m+[m[32m2025-09-26 14:21:50,540 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,545 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,545 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,548 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,551 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,551 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,574 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,577 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,577 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,577 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,577 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,583 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,587 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,587 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,587 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,587 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,591 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,594 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,594 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,594 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,594 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,600 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,604 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,604 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,604 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,604 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,608 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,611 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,611 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,611 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,611 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,616 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,619 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,619 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,619 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,619 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,625 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,628 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,628 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,629 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,629 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,633 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,636 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,636 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,636 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,636 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,642 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,645 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,646 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,646 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,646 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,651 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,654 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,654 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,655 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,655 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,658 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,662 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,662 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,662 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,662 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,667 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,673 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,673 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,673 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,674 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,680 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,680 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,681 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,681 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,687 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,688 - WARNING - Could not load existing history: Load failed[m
+[32m+[m[32m2025-09-26 14:21:50,688 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,688 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,688 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,697 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,702 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,702 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,702 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,702 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,703 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,708 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,714 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,714 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,714 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,715 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,719 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,722 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,722 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,722 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,722 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,727 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,732 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,732 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,732 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,732 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,733 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,737 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,740 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,740 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,740 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,740 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,740 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,746 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,750 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,750 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,750 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,750 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,751 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,755 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,759 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,759 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,759 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,759 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,799 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,801 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,802 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,802 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,802 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,806 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,809 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,809 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,809 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,809 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,812 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,816 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,816 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,816 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,816 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,822 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,825 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,825 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,825 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,825 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,826 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,827 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,830 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,830 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,830 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,830 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,831 - INFO - Set operation: Subtraction[m
+[32m+[m[32m2025-09-26 14:21:50,833 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,836 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,836 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,836 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,836 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,836 - INFO - Set operation: Multiplication[m
+[32m+[m[32m2025-09-26 14:21:50,838 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,842 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,842 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,842 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,842 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,842 - INFO - Set operation: Division[m
+[32m+[m[32m2025-09-26 14:21:50,844 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,846 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,846 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,846 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,847 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,847 - INFO - Set operation: Power[m
+[32m+[m[32m2025-09-26 14:21:50,848 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,851 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,851 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,851 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,851 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,851 - INFO - Set operation: Root[m
+[32m+[m[32m2025-09-26 14:21:50,854 - INFO - Logging initialized at: /home/ppatel/projects/midterm/test_logs/test_log.log[m
+[32m+[m[32m2025-09-26 14:21:50,858 - INFO - Loaded empty history file[m
+[32m+[m[32m2025-09-26 14:21:50,858 - INFO - Calculator initialized with configuration[m
+[32m+[m[32m2025-09-26 14:21:50,858 - INFO - Added observer: LoggingObserver[m
+[32m+[m[32m2025-09-26 14:21:50,858 - INFO - Added observer: AutoSaveObserver[m
+[32m+[m[32m2025-09-26 14:21:50,859 - INFO - Set operation: Addition[m
+[32m+[m[32m2025-09-26 14:21:50,923 - INFO - History auto-saved[m
