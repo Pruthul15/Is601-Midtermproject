@@ -4,7 +4,7 @@
 
 from abc import ABC, abstractmethod
 from decimal import Decimal
-from typing import Dict
+from typing import Dict, List
 from app.exceptions import ValidationError
 
 
@@ -249,6 +249,150 @@ class Root(Operation):
         return Decimal(pow(float(a), 1 / float(b)))
 
 
+# ========================
+# NEW OPERATIONS FOR MIDTERM - ADDED FOR REQUIREMENTS
+# ========================
+
+class Modulus(Operation):
+    """
+    Modulus operation implementation.
+
+    Computes the remainder of the division of two numbers.
+    """
+
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands for modulus operation.
+
+        Ensures that the divisor is not zero.
+
+        Args:
+            a (Decimal): Dividend.
+            b (Decimal): Divisor.
+
+        Raises:
+            ValidationError: If the divisor is zero.
+        """
+        super().validate_operands(a, b)
+        if b == 0:
+            raise ValidationError("Modulus by zero is not allowed")
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        Calculate the remainder of division.
+
+        Args:
+            a (Decimal): Dividend.
+            b (Decimal): Divisor.
+
+        Returns:
+            Decimal: Remainder of the division.
+        """
+        self.validate_operands(a, b)
+        return a % b
+
+
+class IntegerDivision(Operation):
+    """
+    Integer division operation implementation.
+
+    Performs division that results in an integer quotient, discarding any fractional part.
+    """
+
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands for integer division.
+
+        Ensures that the divisor is not zero.
+
+        Args:
+            a (Decimal): Dividend.
+            b (Decimal): Divisor.
+
+        Raises:
+            ValidationError: If the divisor is zero.
+        """
+        super().validate_operands(a, b)
+        if b == 0:
+            raise ValidationError("Integer division by zero is not allowed")
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        Perform integer division.
+
+        Args:
+            a (Decimal): Dividend.
+            b (Decimal): Divisor.
+
+        Returns:
+            Decimal: Integer quotient of the division.
+        """
+        self.validate_operands(a, b)
+        return a // b
+
+
+class Percentage(Operation):
+    """
+    Percentage calculation operation implementation.
+
+    Calculate the percentage of one number with respect to another.
+    Formula: (a / b) * 100
+    """
+
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands for percentage calculation.
+
+        Ensures that the base value (b) is not zero.
+
+        Args:
+            a (Decimal): Value to calculate percentage of.
+            b (Decimal): Base value.
+
+        Raises:
+            ValidationError: If the base value is zero.
+        """
+        super().validate_operands(a, b)
+        if b == 0:
+            raise ValidationError("Cannot calculate percentage with zero base value")
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        Calculate percentage of a with respect to b.
+
+        Args:
+            a (Decimal): Value to calculate percentage of.
+            b (Decimal): Base value.
+
+        Returns:
+            Decimal: Percentage value (a/b * 100).
+        """
+        self.validate_operands(a, b)
+        return (a / b) * Decimal('100')
+
+
+class AbsoluteDifference(Operation):
+    """
+    Absolute difference operation implementation.
+
+    Calculate the absolute difference between two numbers.
+    """
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        Calculate the absolute difference between two numbers.
+
+        Args:
+            a (Decimal): First number.
+            b (Decimal): Second number.
+
+        Returns:
+            Decimal: Absolute difference between a and b.
+        """
+        self.validate_operands(a, b)
+        return abs(a - b)
+
+
 class OperationFactory:
     """
     Factory class for creating operation instances.
@@ -259,13 +403,18 @@ class OperationFactory:
     """
 
     # Dictionary mapping operation identifiers to their corresponding classes
+    # UPDATED: Added new operations for midterm requirements
     _operations: Dict[str, type] = {
         'add': Addition,
         'subtract': Subtraction,
         'multiply': Multiplication,
         'divide': Division,
         'power': Power,
-        'root': Root
+        'root': Root,
+        'modulus': Modulus,
+        'int_divide': IntegerDivision,
+        'percent': Percentage,
+        'abs_diff': AbsoluteDifference
     }
 
     @classmethod
@@ -307,3 +456,13 @@ class OperationFactory:
         if not operation_class:
             raise ValueError(f"Unknown operation: {operation_type}")
         return operation_class()
+
+    @classmethod
+    def get_available_operations(cls) -> List[str]:
+        """
+        Get list of available operation names.
+
+        Returns:
+            List[str]: List of available operation identifiers.
+        """
+        return list(cls._operations.keys())
