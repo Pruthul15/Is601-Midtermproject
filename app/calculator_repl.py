@@ -9,15 +9,16 @@ from app.calculator import Calculator
 from app.exceptions import OperationError, ValidationError
 from app.history import AutoSaveObserver, LoggingObserver
 from app.operations import OperationFactory
+from app.colors import ColorPrinter  # NEW IMPORT
 
 
 def calculator_repl():
     """
-    Command-line interface for the calculator.
+    Command-line interface for the calculator with colorama support.
 
     Implements a Read-Eval-Print Loop (REPL) that continuously prompts the user
     for commands, processes arithmetic operations, and manages calculation history.
-    UPDATED: Enhanced with new operations for midterm requirements.
+    UPDATED: Enhanced with new operations for midterm requirements and color-coded outputs.
     """
     try:
         # Initialize the Calculator instance
@@ -27,90 +28,91 @@ def calculator_repl():
         calc.add_observer(LoggingObserver())
         calc.add_observer(AutoSaveObserver(calc))
 
-        print("Calculator started. Type 'help' for commands.")
+        ColorPrinter.header("Calculator started. Type 'help' for commands.")
 
         while True:
             try:
                 # Prompt the user for a command
-                command = input("\nEnter command: ").lower().strip()
+                ColorPrinter.prompt("\nEnter command: ")
+                command = input().lower().strip()
 
                 if command == 'help':
-                    # Display available commands - UPDATED with new operations
-                    print("\nAvailable commands:")
-                    print("  add, subtract, multiply, divide, power, root - Perform calculations")
-                    print("  modulus - Remainder of division (a % b)")
-                    print("  int_divide - Integer division (a // b)")
-                    print("  percent - Percentage calculation ((a / b) * 100)")
-                    print("  abs_diff - Absolute difference |a - b|")
-                    print("  history - Show calculation history")
-                    print("  clear - Clear calculation history")
-                    print("  undo - Undo the last calculation")
-                    print("  redo - Redo the last undone calculation")
-                    print("  save - Save calculation history to file")
-                    print("  load - Load calculation history from file")
-                    print("  help - Display this help message")
-                    print("  exit - Exit the calculator")
+                    # Display available commands - UPDATED with new operations and colors
+                    ColorPrinter.header("\nAvailable commands:")
+                    ColorPrinter.operation("  add, subtract, multiply, divide, power, root - Perform calculations")
+                    ColorPrinter.operation("  modulus - Remainder of division (a % b)")
+                    ColorPrinter.operation("  int_divide - Integer division (a // b)")
+                    ColorPrinter.operation("  percent - Percentage calculation ((a / b) * 100)")
+                    ColorPrinter.operation("  abs_diff - Absolute difference |a - b|")
+                    ColorPrinter.info("  history - Show calculation history")
+                    ColorPrinter.info("  clear - Clear calculation history")
+                    ColorPrinter.info("  undo - Undo the last calculation")
+                    ColorPrinter.info("  redo - Redo the last undone calculation")
+                    ColorPrinter.warning("  save - Save calculation history to file")
+                    ColorPrinter.warning("  load - Load calculation history from file")
+                    ColorPrinter.header("  help - Display this help message")
+                    ColorPrinter.header("  exit - Exit the calculator")
                     continue
 
                 if command == 'exit':
                     # Attempt to save history before exiting
                     try:
                         calc.save_history()
-                        print("History saved successfully.")
+                        ColorPrinter.success("History saved successfully. Goodbye!")
                     except Exception as e:
-                        print(f"Warning: Could not save history: {e}")
-                    print("Goodbye!")
+                        ColorPrinter.error(f"Warning: Could not save history: {e}")
+                        ColorPrinter.warning("Goodbye!")
                     break
 
                 if command == 'history':
                     # Display calculation history
                     history = calc.show_history()
                     if not history:
-                        print("No calculations in history")
+                        ColorPrinter.warning("No calculations in history")
                     else:
-                        print("\nCalculation History:")
+                        ColorPrinter.header("\nCalculation History:")
                         for i, entry in enumerate(history, 1):
-                            print(f"{i}. {entry}")
+                            ColorPrinter.history(f"{i}. {entry}")
                     continue
 
                 if command == 'clear':
                     # Clear calculation history
                     calc.clear_history()
-                    print("History cleared")
+                    ColorPrinter.success("History cleared")
                     continue
 
                 if command == 'undo':
                     # Undo the last calculation
                     if calc.undo():
-                        print("Operation undone")
+                        ColorPrinter.success("Operation undone")
                     else:
-                        print("Nothing to undo")
+                        ColorPrinter.warning("Nothing to undo")
                     continue
 
                 if command == 'redo':
                     # Redo the last undone calculation
                     if calc.redo():
-                        print("Operation redone")
+                        ColorPrinter.success("Operation redone")
                     else:
-                        print("Nothing to redo")
+                        ColorPrinter.warning("Nothing to redo")
                     continue
 
                 if command == 'save':
                     # Save calculation history to file
                     try:
                         calc.save_history()
-                        print("History saved successfully")
+                        ColorPrinter.success("History saved successfully")
                     except Exception as e:
-                        print(f"Error saving history: {e}")
+                        ColorPrinter.error(f"Error saving history: {e}")
                     continue
 
                 if command == 'load':
                     # Load calculation history from file
                     try:
                         calc.load_history()
-                        print("History loaded successfully")
+                        ColorPrinter.success("History loaded successfully")
                     except Exception as e:
-                        print(f"Error loading history: {e}")
+                        ColorPrinter.error(f"Error loading history: {e}")
                     continue
 
                 # Check if command is a valid operation - UPDATED to use dynamic operation list
@@ -118,19 +120,21 @@ def calculator_repl():
                 if command in available_operations:
                     # Perform the specified arithmetic operation
                     try:
-                        print(f"\nPerforming {command} operation:")
-                        print("Enter numbers (or 'cancel' to abort):")
+                        ColorPrinter.operation(f"\nPerforming {command} operation:")
+                        ColorPrinter.info("Enter numbers (or 'cancel' to abort):")
                         
                         # Get first operand
-                        a = input("First number: ")
+                        ColorPrinter.prompt("First number: ")
+                        a = input()
                         if a.lower() == 'cancel':
-                            print("Operation cancelled")
+                            ColorPrinter.warning("Operation cancelled")
                             continue
                             
                         # Get second operand
-                        b = input("Second number: ")
+                        ColorPrinter.prompt("Second number: ")
+                        b = input()
                         if b.lower() == 'cancel':
-                            print("Operation cancelled")
+                            ColorPrinter.warning("Operation cancelled")
                             continue
 
                         # Create the appropriate operation instance using the Factory pattern
@@ -174,54 +178,54 @@ def calculator_repl():
 
                         formatted_result = format_for_display(result)
 
-                        # Display operation-specific result messages - UPDATED for new operations
+                        # Display operation-specific result messages - UPDATED for new operations with colors
                         if command == 'percent':
                             # FIXED: Limit percentage precision for readability
                             try:
                                 # Round to 2 decimal places for percentages to avoid excessive precision
                                 if isinstance(result, Decimal):
                                     rounded_result = round(float(result), 2)
-                                    print(f"\nResult: {rounded_result}%")
+                                    ColorPrinter.result(f"\nResult: {rounded_result}%")
                                 else:
-                                    print(f"\nResult: {formatted_result}%")
+                                    ColorPrinter.result(f"\nResult: {formatted_result}%")
                             except:
                                 # Fallback if rounding fails
-                                print(f"\nResult: {formatted_result}%")
+                                ColorPrinter.result(f"\nResult: {formatted_result}%")
                         elif command == 'modulus':
-                            print(f"\nRemainder: {formatted_result}")
+                            ColorPrinter.result(f"\nRemainder: {formatted_result}")
                         elif command == 'int_divide':
-                            print(f"\nInteger quotient: {formatted_result}")
+                            ColorPrinter.result(f"\nInteger quotient: {formatted_result}")
                         elif command == 'abs_diff':
-                            print(f"\nAbsolute difference: {formatted_result}")
+                            ColorPrinter.result(f"\nAbsolute difference: {formatted_result}")
                         else:
-                            print(f"\nResult: {formatted_result}")
+                            ColorPrinter.result(f"\nResult: {formatted_result}")
                             
                     except (ValidationError, OperationError) as e:
                         # Handle known exceptions related to validation or operation errors
-                        print(f"Error: {e}")
+                        ColorPrinter.error(f"Error: {e}")
                     except Exception as e:
                         # Handle any unexpected exceptions
-                        print(f"Unexpected error: {e}")
+                        ColorPrinter.error(f"Unexpected error: {e}")
                     continue
 
                 # Handle unknown commands
-                print(f"Unknown command: '{command}'. Type 'help' for available commands.")
+                ColorPrinter.error(f"Unknown command: '{command}'. Type 'help' for available commands.")
 
             except KeyboardInterrupt:
                 # Handle Ctrl+C interruption gracefully
-                print("\nOperation cancelled")
+                ColorPrinter.warning("\nOperation cancelled")
                 continue
             except EOFError:
                 # Handle end-of-file (e.g., Ctrl+D) gracefully
-                print("\nInput terminated. Exiting...")
+                ColorPrinter.warning("\nInput terminated. Exiting...")
                 break
             except Exception as e:
                 # Handle any other unexpected exceptions
-                print(f"Error: {e}")
+                ColorPrinter.error(f"Error: {e}")
                 continue
 
     except Exception as e:
         # Handle fatal errors during initialization
-        print(f"Fatal error: {e}")
+        ColorPrinter.error(f"Fatal error: {e}")
         logging.error(f"Fatal error in calculator REPL: {e}")
         raise
