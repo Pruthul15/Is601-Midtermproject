@@ -17,6 +17,7 @@ def calculator_repl():
 
     Implements a Read-Eval-Print Loop (REPL) that continuously prompts the user
     for commands, processes arithmetic operations, and manages calculation history.
+    UPDATED: Enhanced with new operations for midterm requirements.
     """
     try:
         # Initialize the Calculator instance
@@ -34,16 +35,27 @@ def calculator_repl():
                 command = input("\nEnter command: ").lower().strip()
 
                 if command == 'help':
-                    # Display available commands
+                    # Display available commands - UPDATED with new operations
                     print("\nAvailable commands:")
-                    print("  add, subtract, multiply, divide, power, root - Perform calculations")
-                    print("  history - Show calculation history")
-                    print("  clear - Clear calculation history")
-                    print("  undo - Undo the last calculation")
-                    print("  redo - Redo the last undone calculation")
-                    print("  save - Save calculation history to file")
-                    print("  load - Load calculation history from file")
-                    print("  exit - Exit the calculator")
+                    print("  Basic Operations:")
+                    print("    add, subtract, multiply, divide - Basic arithmetic")
+                    print("    power, root - Advanced arithmetic")
+                    print("  New Operations:")
+                    print("    modulus - Remainder of division (a % b)")
+                    print("    int_divide - Integer division (a // b)")
+                    print("    percent - Percentage calculation ((a / b) * 100)")
+                    print("    abs_diff - Absolute difference |a - b|")
+                    print("  History Commands:")
+                    print("    history - Show calculation history")
+                    print("    clear - Clear calculation history")
+                    print("    undo - Undo the last calculation")
+                    print("    redo - Redo the last undone calculation")
+                    print("  File Operations:")
+                    print("    save - Save calculation history to file")
+                    print("    load - Load calculation history from file")
+                    print("  Other:")
+                    print("    help - Display this help message")
+                    print("    exit - Exit the calculator")
                     continue
 
                 if command == 'exit':
@@ -107,14 +119,21 @@ def calculator_repl():
                         print(f"Error loading history: {e}")
                     continue
 
-                if command in ['add', 'subtract', 'multiply', 'divide', 'power', 'root']:
+                # Check if command is a valid operation - UPDATED to use dynamic operation list
+                available_operations = OperationFactory.get_available_operations()
+                if command in available_operations:
                     # Perform the specified arithmetic operation
                     try:
-                        print("\nEnter numbers (or 'cancel' to abort):")
+                        print(f"\nPerforming {command} operation:")
+                        print("Enter numbers (or 'cancel' to abort):")
+                        
+                        # Get first operand
                         a = input("First number: ")
                         if a.lower() == 'cancel':
                             print("Operation cancelled")
                             continue
+                            
+                        # Get second operand
                         b = input("Second number: ")
                         if b.lower() == 'cancel':
                             print("Operation cancelled")
@@ -131,7 +150,18 @@ def calculator_repl():
                         if isinstance(result, Decimal):
                             result = result.normalize()
 
-                        print(f"\nResult: {result}")
+                        # Display operation-specific result messages - UPDATED for new operations
+                        if command == 'percent':
+                            print(f"\nResult: {result}%")
+                        elif command == 'modulus':
+                            print(f"\nRemainder: {result}")
+                        elif command == 'int_divide':
+                            print(f"\nInteger quotient: {result}")
+                        elif command == 'abs_diff':
+                            print(f"\nAbsolute difference: {result}")
+                        else:
+                            print(f"\nResult: {result}")
+                            
                     except (ValidationError, OperationError) as e:
                         # Handle known exceptions related to validation or operation errors
                         print(f"Error: {e}")
