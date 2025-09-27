@@ -175,7 +175,8 @@ def test_calculator_repl_help(mock_header, mock_input):
             with patch('app.calculator_repl.ColorPrinter.info'):
                 with patch('app.calculator_repl.ColorPrinter.warning'):
                     calculator_repl()
-                    mock_header.assert_any_call("\nAvailable commands:")
+                    # FIXED: Updated to match new dynamic help format
+                    mock_header.assert_any_call("Available commands:")
 
 @patch('builtins.input', side_effect=['add', '2', '3', 'exit'])
 @patch('app.calculator_repl.ColorPrinter.result')
@@ -186,7 +187,7 @@ def test_calculator_repl_addition(mock_result, mock_input):
             with patch('app.calculator_repl.ColorPrinter.info'):
                 with patch('app.calculator_repl.ColorPrinter.prompt'):
                     calculator_repl()
-                    mock_result.assert_any_call("\nResult: 5")
+                    mock_result.assert_any_call("Result: 5")
 
 # ========================
 # Enhanced Coverage Tests - FIXED with Proper Isolation
