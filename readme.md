@@ -332,8 +332,6 @@ This project is licensed under the MIT License.
 **Pruthul Patel**  
 IS601 - Web Systems Development  
 Midterm Project - Fall 2025  
-New Jersey Institute of Technology
+
 
 ---
-
-*Last Updated: October 2025*
