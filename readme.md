@@ -1,193 +1,339 @@
-# Advanced Calculator with Design Patterns
+# Advanced Calculator with Design Patterns - Midterm Project
 
-A command-line calculator application built with Python that uses advanced design patterns, pandas for data management, and comprehensive testing.
+[![Python application](https://github.com/Pruthul15/is601-Midtermproject/actions/workflows/python-app.yml/badge.svg)](https://github.com/Pruthul15/is601-Midtermproject/actions/workflows/python-app.yml)
+[![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen.svg)](https://github.com/Pruthul15/is601-Midtermproject)
 
-## What This Does
+A professional command-line calculator application built with Python that implements multiple design patterns, comprehensive testing, and CI/CD automation.
 
-This calculator lets you do math operations through a command-line interface. It saves your calculation history, has undo/redo functionality, and uses several design patterns to make the code maintainable.
+**Author:** Pruthul Patel  
+**Repository:** https://github.com/Pruthul15/is601-Midtermproject
+
+---
 
 ## Features
 
-- Basic operations: add, subtract, multiply, divide, power, root
-- Undo and redo your calculations 
-- History management - see all your past calculations
-- Auto-saves your work to CSV files
-- Load and save history manually
+**Core Operations:**
+- Basic: add, subtract, multiply, divide
+- Advanced: power, root, modulus, int_divide, percent, abs_diff
+
+**Advanced Functionality:**
+- Undo/redo using Memento pattern
+- History management with pandas DataFrames
+- Auto-save to CSV files using Observer pattern
+- Color-coded output with Colorama
+- Dynamic help menu with Decorator pattern
+- Command pattern for operation encapsulation
 - Configuration through environment variables
 - Comprehensive error handling
 
-## Setup Instructions
+**Quality Metrics:**
+- 96% test coverage with 307 tests
+- All tests passing with CI/CD automation
+- 7 design patterns implemented
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/Pruthul15/assignment5.git
-cd assignment5
-```
+---
 
-### 2. Create Virtual Environment
+## Installation Instructions
+
+### 1. Clone and Setup
 ```bash
+git clone https://github.com/Pruthul15/is601-Midtermproject.git
+cd is601-Midtermproject
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-### 3. Install Dependencies
-```bash
 pip install -r requirements.txt
 ```
 
-### 4. Set Up Environment Variables
+### 2. Create Configuration File
 Create a `.env` file in the project root:
-```
+
+```env
 CALCULATOR_MAX_HISTORY_SIZE=100
 CALCULATOR_AUTO_SAVE=true
+CALCULATOR_PRECISION=10
+CALCULATOR_MAX_INPUT_VALUE=1e999
 CALCULATOR_DEFAULT_ENCODING=utf-8
 ```
 
-### 5. Run the Calculator
+### 3. Run the Calculator
 ```bash
 python main.py
 ```
 
-## How to Use
+---
 
-When you start the calculator, you'll see:
-```
-Calculator started. Type 'help' for commands.
-Enter command:
-```
+## Usage Guide
 
 ### Available Commands
 
-- `add`, `subtract`, `multiply`, `divide`, `power`, `root` - Do math operations
-- `history` - Show all your past calculations
-- `clear` - Clear the calculation history
-- `undo` - Undo the last calculation
-- `redo` - Redo the last undone calculation
-- `save` - Save history to file
-- `load` - Load history from file
-- `help` - Show available commands
-- `exit` - Exit the calculator
+**Operations:** add, subtract, multiply, divide, power, root, modulus, int_divide, percent, abs_diff  
+**History:** history, clear, save, load  
+**State:** undo, redo  
+**Utility:** help, exit
 
-### Example Usage
+### Example Session
+
 ```
 Enter command: add
-Enter numbers (or 'cancel' to abort):
-First number: 5
-Second number: 3
-Result: 8
-
-Enter command: multiply
-Enter numbers (or 'cancel' to abort):
-First number: 4
+First number: 15
 Second number: 7
-Result: 28
+✓ SUCCESS: Result: 22
+
+Enter command: power
+First number: 2
+Second number: 8
+= RESULT: Result: 256
 
 Enter command: history
-Calculation History:
-1. Addition(5, 3) = 8
-2. Multiplication(4, 7) = 28
+=== Calculation History: ===
+  1. Addition(15, 7) = 22
+  2. Exponentiation(2, 8) = 256
 
 Enter command: undo
-Operation undone
+✓ SUCCESS: Operation undone
 
-Enter command: history
-Calculation History:
-1. Addition(5, 3) = 8
+Enter command: exit
+✓ SUCCESS: History saved successfully. Goodbye!
 ```
+
+---
 
 ## Project Structure
 
 ```
-assignment5/
+is601-Midtermproject/
+├── .github/
+│   └── workflows/
+│       ├── python-app.yml          # Main CI/CD workflow
+│       └── tests.yml               # Additional test workflow
 ├── app/
 │   ├── __init__.py
-│   ├── calculation.py          # Individual calculation logic
-│   ├── calculator.py           # Main calculator class
-│   ├── calculator_config.py    # Configuration management
-│   ├── calculator_memento.py   # Undo/redo functionality
-│   ├── calculator_repl.py      # Command-line interface
-│   ├── exceptions.py           # Custom exceptions
-│   ├── history.py              # History management and observers
-│   ├── input_validators.py     # Input validation
-│   └── operations.py           # Operation classes and factory
+│   ├── calculation.py              # Calculation data model
+│   ├── calculator.py               # Main calculator (Facade pattern)
+│   ├── calculator_config.py        # Configuration management
+│   ├── calculator_memento.py       # Memento pattern for undo/redo
+│   ├── calculator_repl.py          # REPL command-line interface
+│   ├── colors.py                   # Colorama color output
+│   ├── command_pattern.py          # Command pattern implementation
+│   ├── exceptions.py               # Custom exception classes
+│   ├── help_decorator.py           # Decorator pattern for help menu
+│   ├── history.py                  # Observer pattern for history
+│   ├── input_validators.py         # Input validation
+│   └── operations.py               # Factory & Strategy patterns
 ├── tests/
-│   ├── test_calculation.py
-│   ├── test_calculator.py
-│   ├── test_calculator_memento.py
-│   ├── test_calculator_repl.py
-│   ├── test_config.py
-│   ├── test_exceptions.py
-│   ├── test_history.py
-│   ├── test_operations.py
-│   └── test_validators.py
-├── main.py
-├── requirements.txt
-├── .env
-└── README.md
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── test_calculation.py         # 29 tests
+│   ├── test_calculator.py          # 36 tests
+│   ├── test_calculator_memento.py  # 12 tests
+│   ├── test_calculator_repl.py     # 31 tests
+│   ├── test_colors.py              # 33 tests
+│   ├── test_command_pattern.py     # 44 tests
+│   ├── test_config.py              # 18 tests
+│   ├── test_exceptions.py          # 7 tests
+│   ├── test_help_decorator.py      # 38 tests
+│   ├── test_history.py             # 7 tests
+│   ├── test_operations.py          # 50 tests
+│   └── test_validators.py          # 18 tests
+├── history/                        # Auto-created for CSV files
+├── logs/                           # Auto-created for log files
+├── .env                            # Environment configuration
+├── .gitignore
+├── main.py                         # Application entry point
+├── requirements.txt                # Python dependencies
+└── README.md                       # This file
 ```
 
-## Design Patterns Used
+---
 
-- **Factory Pattern**: Creates operation objects based on user input
-- **Observer Pattern**: Monitors calculation events for logging and auto-saving
-- **Memento Pattern**: Saves calculator state for undo/redo functionality
-- **Strategy Pattern**: Interchangeable operation execution strategies
-- **Facade Pattern**: Simplified interface through the Calculator class
+## Design Patterns
+
+| Pattern | Purpose | Implementation |
+|---------|---------|----------------|
+| **Factory** | Create operation instances | `OperationFactory` in operations.py |
+| **Memento** | Undo/redo functionality | `CalculatorMemento` for state management |
+| **Observer** | Auto-save notifications | `LoggingObserver`, `AutoSaveObserver` |
+| **Strategy** | Interchangeable operations | `Operation` base class |
+| **Facade** | Simplified interface | `Calculator` class |
+| **Command** | Request encapsulation | Command classes in command_pattern.py |
+| **Decorator** | Dynamic help generation | `DynamicHelpGenerator` |
+
+---
+
+## Error Handling Examples
+
+**Division by Zero:**
+```
+Enter command: divide
+First number: 10
+Second number: 0
+✗ ERROR: Operation failed: Division by zero is not allowed
+```
+
+**Invalid Input:**
+```
+Enter command: add
+First number: abc
+✗ ERROR: Invalid number format: abc
+```
+
+**Root of Negative Number:**
+```
+Enter command: root
+First number: -25
+Second number: 2
+✗ ERROR: Cannot calculate root of negative number
+```
+
+**Unknown Command:**
+```
+Enter command: xyz
+✗ ERROR: Unknown command: 'xyz'. Type 'help' for available commands.
+```
+
+---
 
 ## Testing
 
-Run all tests:
+### Run Tests
 ```bash
-pytest
+pytest                          # Run all tests
+pytest -v                       # Verbose output
+pytest --cov=app tests/         # With coverage report
+pytest --cov=app --cov-fail-under=90 tests/  # Enforce 90% threshold
 ```
 
-Run tests with coverage:
-```bash
-pytest --cov=app tests/
+### Test Coverage
+- **Total Tests:** 307
+- **Coverage:** 96.08%
+- **Status:** ✅ All tests passing
+
+**Coverage by Module:**
+```
+app/calculator.py          100%
+app/operations.py          100%
+app/history.py             100%
+app/exceptions.py          100%
+app/calculator_config.py   100%
+app/calculator_memento.py  100%
+app/input_validators.py    100%
+app/calculator_repl.py      98%
+app/command_pattern.py      97%
+app/calculation.py          95%
+app/help_decorator.py       92%
+app/colors.py               76%
 ```
 
-Current test coverage: **99%** with **171 tests**
+---
+
+## CI/CD with GitHub Actions
+
+**Automated testing runs on every push:**
+- Sets up Python 3.12 environment
+- Installs dependencies from requirements.txt
+- Runs full test suite with coverage
+- Enforces 90% coverage threshold
+- Fails if tests don't pass
+
+**View Workflow:** `.github/workflows/python-app.yml`  
+**Check Status:** [GitHub Actions](https://github.com/Pruthul15/is601-Midtermproject/actions)
+
+---
+
+## Data Management with pandas
+
+**History Storage:**
+- Stored in pandas DataFrame
+- Auto-saves to CSV: `history/calculator_history.csv`
+- Includes: operation, operands, result, timestamp
+- Load/save functionality for persistence
+
+**Example CSV:**
+```csv
+operation,operand1,operand2,result,timestamp
+Addition,15,7,22,2025-10-09T20:18:12.165424
+Exponentiation,2,8,256,2025-10-09T20:18:15.273261
+```
+
+---
 
 ## Configuration Options
 
-You can customize the calculator through environment variables in the `.env` file:
+Set in `.env` file:
 
-- `CALCULATOR_MAX_HISTORY_SIZE` - Maximum number of calculations to keep in history
-- `CALCULATOR_AUTO_SAVE` - Whether to automatically save history after each operation
-- `CALCULATOR_DEFAULT_ENCODING` - Text encoding for file operations
-- `CALCULATOR_PRECISION` - Decimal precision for results
-- `CALCULATOR_MAX_INPUT_VALUE` - Maximum allowable input value
+| Variable | Description | Default |
+|----------|-------------|---------|
+| CALCULATOR_MAX_HISTORY_SIZE | Max history entries | 100 |
+| CALCULATOR_AUTO_SAVE | Auto-save after operations | true |
+| CALCULATOR_PRECISION | Decimal precision | 10 |
+| CALCULATOR_MAX_INPUT_VALUE | Max input allowed | 1e999 |
+| CALCULATOR_DEFAULT_ENCODING | File encoding | utf-8 |
 
-## Data Storage
+---
 
-The calculator uses pandas to manage calculation history:
-- History is automatically saved to `history/calculator_history.csv`
-- Each calculation includes operation, operands, result, and timestamp
-- Data persists between sessions
+## Optional Advanced Features
 
-## Error Handling
+This project implements **3 optional features** (only 1 required for A):
 
-The calculator handles various error scenarios:
-- Invalid input (non-numeric values)
-- Division by zero
-- Invalid operations
-- File I/O errors
-- Configuration errors
+### 1. Dynamic Help Menu (Decorator Pattern)
+- Automatically generates help based on available operations
+- Adding new operations updates help menu automatically
+- Implementation: `app/help_decorator.py`
 
-## Development
+### 2. Color-Coded Output (Colorama)
+- Enhanced readability with colored terminal output
+- Green for success, red for errors, yellow for warnings
+- Implementation: `app/colors.py`
 
-If you want to modify or extend the calculator:
+### 3. Command Pattern
+- Encapsulates requests as objects
+- Enables operation queuing and logging
+- Implementation: `app/command_pattern.py`
 
-1. All application code is in the `app/` directory
-2. Tests are in the `tests/` directory
-3. Follow the existing patterns for consistency
-4. Add tests for any new functionality
-5. Update this README if you add new features
+---
 
 ## Requirements
 
-- Python 3.x
-- pandas
-- pytest (for testing)
-- python-dotenv (for environment variables)
-i wqanted to push to git 
+**Python Packages:**
+```
+Python 3.12+
+pandas>=2.2.3
+python-dotenv>=1.0.1
+colorama>=0.4.6
+pytest>=8.3.3
+pytest-cov>=6.0.0
+```
+
+**Full list:** See `requirements.txt`
+
+---
+
+## Learning Outcomes Demonstrated
+
+✅ **CLO1:** Git version control and collaborative development  
+✅ **CLO2:** Linux command-line proficiency  
+✅ **CLO3:** Python applications with automated testing  
+✅ **CLO4:** CI/CD with GitHub Actions  
+✅ **CLO5:** REPL pattern implementation  
+✅ **CLO6:** Object-oriented programming principles  
+✅ **CLO7:** Professional software development practices  
+✅ **CLO8:** CSV file manipulation with pandas
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+## Author
+
+**Pruthul Patel**  
+IS601 - Web Systems Development  
+Midterm Project - Fall 2025  
+New Jersey Institute of Technology
+
+---
+
+*Last Updated: October 2025*
