@@ -16,3 +16,5 @@ data/
 
 # VS Code (optional)
 .vscode/
+install_tests.sh
+test_logs/
