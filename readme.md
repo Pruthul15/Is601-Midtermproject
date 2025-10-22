@@ -1,7 +1,7 @@
 # Advanced Calculator with Design Patterns - Midterm Project
 
 [![Python application](https://github.com/Pruthul15/is601-Midtermproject/actions/workflows/python-app.yml/badge.svg)](https://github.com/Pruthul15/is601-Midtermproject/actions/workflows/python-app.yml)
-[![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen.svg)](https://github.com/Pruthul15/is601-Midtermproject)
+[![Coverage](https://img.shields.io/badge/coverage-99%25-brightgreen.svg)](https://github.com/Pruthul15/is601-Midtermproject)
 
 A professional command-line calculator application built with Python that implements multiple design patterns, comprehensive testing, and CI/CD automation.
 
@@ -27,7 +27,7 @@ A professional command-line calculator application built with Python that implem
 - Comprehensive error handling
 
 **Quality Metrics:**
-- 96% test coverage with 307 tests
+- 99% test coverage with 307 tests
 - All tests passing with CI/CD automation
 - 7 design patterns implemented
 
@@ -205,8 +205,8 @@ pytest --cov=app --cov-fail-under=90 tests/  # Enforce 90% threshold
 
 ### Test Coverage
 - **Total Tests:** 307
-- **Coverage:** 96.08%
-- **Status:** ✅ All tests passing
+- **Coverage:** 99%
+- **Status:** All tests passing
 
 **Coverage by Module:**
 ```
@@ -217,11 +217,11 @@ app/exceptions.py          100%
 app/calculator_config.py   100%
 app/calculator_memento.py  100%
 app/input_validators.py    100%
+app/colors.py              100%
+app/help_decorator.py      100%
 app/calculator_repl.py      98%
-app/command_pattern.py      97%
-app/calculation.py          95%
-app/help_decorator.py       92%
-app/colors.py               76%
+app/command_pattern.py      99%
+app/calculation.py          96%
 ```
 
 ---
