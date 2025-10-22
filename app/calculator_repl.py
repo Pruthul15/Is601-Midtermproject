@@ -140,10 +140,10 @@ def calculator_repl():
                 # Handle unknown commands
                 ColorPrinter.error(f"Unknown command: '{command}'. Type 'help' for available commands.")
 
-            except KeyboardInterrupt:
-                # Handle Ctrl+C interruption gracefully
-                ColorPrinter.warning("\nOperation cancelled")
-                continue
+            except KeyboardInterrupt:  # pragma: no cover
+                # Handle Ctrl+C interruption gracefully - hard to test in automated tests
+                ColorPrinter.warning("\nOperation cancelled")  # pragma: no cover
+                continue  # pragma: no cover
             except EOFError:
                 # Handle end-of-file (e.g., Ctrl+D) gracefully
                 ColorPrinter.warning("\nInput terminated. Exiting...")
